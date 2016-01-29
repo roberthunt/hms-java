@@ -1,0 +1,158 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title layout:title-pattern="$DECORATOR_TITLE - $CONTENT_TITLE">Nottingham Hackspace Management System</title>
+    <link th:href="@{/favicon.ico}" type="image/x-icon" rel="icon" />
+    <link th:href="@{/favicon.ico}" type="image/x-icon" rel="shortcut icon" />
+    <link th:href="@{/css/hms.css}" rel="stylesheet" type="text/css" />
+    <link th:href="@{/css/jquery-ui-1.10.3.custom.min.css}" rel="stylesheet" type="text/css" />
+    <!--[if lt IE 9]>
+    <script th:src="@{/js/jquery-1.10.2.min.js}" type="text/javascript"></script>
+    <![endif]-->
+    <!--[if gte IE 9]><!-->
+    <script th:src="@{/js/jquery-2.0.3.min.js}" type="text/javascript"></script>
+    <!--<![endif]-->
+    <script th:src="@{/js/jquery-ui-1.10.3.custom.min.js}" type="text/javascript"></script>
+</head>
+<body>
+    <div id="container">
+        <div id="header">
+            <div class="banner"></div>
+            <div class="userBar">
+                <div class="login">
+                    <div sec:authorize="isAuthenticated()">
+                        Logged in as:
+                        <a th:replace="fragments/breadcrumbs :: member(${#authentication.principal})">Member</a>
+                        <span class="loginSpace">
+                            <a th:href="@{/logout}">Logout</a>
+                        </span>
+                    </div>
+                    <div sec:authorize="isAnonymous()">
+                        Already a member?
+                        <a th:href="@{/login}">Login</a>
+                    </div>
+                </div>
+                <th:block sec:authorize="isAuthenticated()">
+                    <div class="adminNav">
+                        <ul>
+                            <li sec:authorize="hasAuthority(T(uk.org.nottinghack.domain.Permission).VIEW_OTHER_MEMBERS)">
+                                <a href="/members">Members</a>
+                            </li>
+                            <li>
+                                <a href="/groups">Groups</a>
+                            </li>
+                            <li>
+                                <a href="/mailinglists">Mailing Lists</a>
+                            </li>
+                            <li>
+                                <a href="/transactions">Snackspace</a>
+                            </li>
+                            <li>
+                                <a href="/membervoice">MemberVoice</a>
+                            </li>
+                            <li>
+                                <a href="/tools">Tools</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="clear"></div>
+                </th:block>
+                <th:block th:unless="${#lists.isEmpty(userMessages)}">
+                    <div class="userMessage">
+                        <ul>
+                            <!--/* TODO: may need HTML link for the user message - seem to be used to complete contact details */-->
+                            <li th:each="userMessage : ${userMessages}" th:text="${userMessage}"></li>
+                        </ul>
+                    </div>
+                    <div class="clear"></div>
+                </th:block>
+            </div>
+        </div>
+        <div id="content">
+            <div id="crumb" layout:fragment="crumbs"></div>
+            <div id="flashMessage" class="message" th:if="${message}" th:text="${message}">Flash Message</div>
+            <div layout:fragment="content"></div>
+        </div>
+        <div id="footer">
+            <div id="footer-widget-area" role="complementary" th:with="env=${@environment}">
+
+                <div id="first" class="widget-area">
+                    <ul class="xoxo">
+                        <li>
+                            HMS Version <th:block th:text="${env.getProperty('hms.version')}"></th:block>
+                        </li>
+                        <li>
+                            <a th:href="${env.getProperty('hms.web.source')}">Get Source</a>
+                        </li>
+                        <li>
+                            <a href="pages/credits">Credits</a>
+                        </li>
+                        <li>
+                            <a th:href="${env.getProperty('hms.web.site')}">Nottinghack Website</a>
+                        </li>
+                        <li>
+                            &#169; <th:block th:text="${#temporals.year(#temporals.createToday())}"></th:block> Nottinghack
+                        </li>
+                    </ul>
+                </div>
+
+                <div id="second" class="widget-area">
+                    <ul class="xoxo">
+                        <li>
+                            <div>
+                                <ul>
+                                    <li>
+                                        <a th:href="${env.getProperty('hms.web.twitter')}">twitter</a>
+                                    </li>
+                                    <li>
+                                        <a th:href="${env.getProperty('hms.web.mailinglist')}">google group</a>
+                                    </li>
+                                    <li>
+                                        <a th:href="${env.getProperty('hms.web.flickr')}">flickr</a>
+                                    </li>
+                                    <li>
+                                        <a th:href="${env.getProperty('hms.web.youtube')}">youtube</a>
+                                    </li>
+                                    <li>
+                                        <a th:href="${env.getProperty('hms.web.facebook')}">facebook</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+                <div id="third" class="widget-area">
+                    <ul class="xoxo">
+                        <li>
+                            <div>
+                                <th:block th:each="line, lineStat : ${#strings.arraySplit(env.getProperty('hms.company.details'),',')}">
+                                    <th:block th:text="${line}"></th:block>
+                                    <br th:unless="${lineStat.last}" />
+                                </th:block>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+                <div id="fourth" class="widget-area">
+                    <ul class="xoxo">
+                        <li>
+                            <div>
+                                <th:block th:each="line, lineStat : ${#strings.arraySplit(env.getProperty('hms.company.address'), ',')}">
+                                    <th:block th:text="${line}"></th:block>
+                                    <br th:unless="${lineStat.last}" />
+                                </th:block>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,18 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html layout:decorator="layouts/email">
+<head>
+    <title>Member Reinstated</title>
+</head>
+<body layout:fragment="content" th:inline="text">
+    <p>
+        Member has been reinstated:
+    </p>
+    <p>
+        We have seen a standing-order payment from
+        <a th:href="${#mvc.url('MC#view').arg(0, member.id).build()}" th:text="${member.fullName}">Member Full Name</a>
+        [[${member.email}]] and should now e-mail them to organise access to the space. Their gatekeeper PIN is
+        [[${member.pins[0]}]]. Please notify the other member admins if you are unable to arrange first access for the
+        new member.
+    </p>
+</body>
+</html>

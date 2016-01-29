@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html layout:decorator="layouts/default">
+<head>
+    <title>Members</title>
+</head>
+<body>
+<div layout:fragment="content">
+
+    <div id="crumb">
+        <a th:replace="fragments/breadcrumbs :: home">Home</a>
+        &gt;
+        <a th:replace="fragments/breadcrumbs :: members">Members</a>
+        &gt;
+        <a th:replace="fragments/breadcrumbs :: member(${member})">Member</a>
+    </div>
+
+    <!--<form action="/hms/members/edit/177" id="MemberEditForm" method="post" accept-charset="utf-8">-->
+    <form action="#" th:action="@{/members/edit}" th:object="${member}" method="post">
+
+        <input type="hidden" th:field="*{id}" />
+
+        <div class="input text required">
+            <label for="username" th:text="#{member.username}">Username</label>
+            <input type="text" id="username" th:field="*{username}" required="required" th:maxlength="${T(uk.org.nottinghack.domain.Member).USERNAME_MAX_LENGTH}"/>
+        </div>
+
+        <div class="input text required">
+            <label for="firstname" th:text="#{member.firstname}">Firstname</label>
+            <input type="text" id="firstname" th:field="*{firstname}" required="required" th:maxlength="${T(uk.org.nottinghack.domain.Member).FIRSTNAME_MAX_LENGTH}"/>
+        </div>
+
+        <div class="input text required">
+            <label for="surname" th:text="#{member.surname}">Surname</label>
+            <input type="text" id="surname" th:field="*{surname}" required="required" th:maxlength="${T(uk.org.nottinghack.domain.Member).SURNAME_MAX_LENGTH}"/>
+        </div>
+
+        <!--<div class="input email required">-->
+            <!--<label for="MemberEmail">Email</label><input name="data[Member][email]" maxlength="100" type="email" value=-->
+                <!--"" id="MemberEmail" required="required" />-->
+        <!--</div>-->
+
+        <!--<div class="input text required">-->
+            <!--<label for="MemberUnlockText">Unlock Text</label><input name="data[Member][unlock_text]" maxlength="95" type="text"-->
+                                                                    <!--value="" id="MemberUnlockText" required="required" />-->
+        <!--</div>-->
+
+        <!--<div class="input text required">-->
+            <!--<label for="MemberAddress1">Address part 1 (House name/number and street)</label><input name="data[Member][address_1]"-->
+                                                                                                    <!--maxlength="100" type="text" value="" id="MemberAddress1" required="required" />-->
+        <!--</div>-->
+
+        <!--<div class="input text">-->
+            <!--<label for="MemberAddress2">Address part 2</label><input name="data[Member][address_2]" maxlength="100" type="text"-->
+                                                                     <!--value="" id="MemberAddress2" />-->
+        <!--</div>-->
+
+        <!--<div class="input text required">-->
+            <!--<label for="MemberAddressCity">City</label><input name="data[Member][address_city]" maxlength="100" type="text" value=-->
+                <!--"" id="MemberAddressCity" required="required" />-->
+        <!--</div>-->
+
+        <!--<div class="input text required">-->
+            <!--<label for="MemberAddressPostcode">Postcode</label><input name="data[Member][address_postcode]" maxlength="100" type=-->
+                <!--"text" value="" id="MemberAddressPostcode" required="required" />-->
+        <!--</div>-->
+
+        <!--<div class="input text required">-->
+            <!--<label for="MemberContactNumber">Contact Number</label><input name="data[Member][contact_number]" maxlength="20" type=-->
+                <!--"text" value="" id="MemberContactNumber" required="required" />-->
+        <!--</div>-->
+
+        <!--<div class="input select required">-->
+            <!--<label for="MemberAccountId">Account</label><select name="data[Member][account_id]" id="MemberAccountId" required=-->
+                <!--"required">-->
+            <!--<option value="-1">-->
+                <!--Create new-->
+            <!--</option>-->
+
+            <!--<option value="11">-->
+                <!--Testing Member-->
+            <!--</option>-->
+        <!--</select>-->
+        <!--</div>-->
+
+        <!--<fieldset>-->
+            <!--<legend>Pins</legend>-->
+
+            <!--<div class="input text required">-->
+                <!--<label for="Pin0Pin">Pin</label><input name="data[Pin][0][pin]" readonly="readonly" maxlength="12" type="text" value=-->
+                    <!--"" id="Pin0Pin" required="required" />-->
+            <!--</div>-->
+
+            <!--<fieldset>-->
+                <!--<legend>Groups</legend>-->
+
+                <!--<div class="input select">-->
+                    <!--<input type="hidden" name="data[Group][Group]" value="" id="GroupGroup" />-->
+
+                    <!--<div class="checkbox">-->
+                        <!--<input type="checkbox" name="data[Group][Group][]" checked="checked" value="2" id="GroupGroup2" /><label for=-->
+                                                                                                                                         <!--"GroupGroup2" class="selected">Current members</label>-->
+                    <!--</div>-->
+
+                    <!--<div class="checkbox">-->
+                        <!--<input type="checkbox" name="data[Group][Group][]" checked="checked" value="1" id="GroupGroup1" /><label for=-->
+                                                                                                                                         <!--"GroupGroup1" class="selected">Full Access</label>-->
+                    <!--</div>-->
+
+                    <!--<div class="checkbox">-->
+                        <!--<input type="checkbox" name="data[Group][Group][]" checked="checked" value="4" id="GroupGroup4" /><label for=-->
+                                                                                                                                         <!--"GroupGroup4" class="selected">Gatekeeper admin</label>-->
+                    <!--</div>-->
+
+                    <!--<div class="checkbox">-->
+                        <!--<input type="checkbox" name="data[Group][Group][]" checked="checked" value="5" id="GroupGroup5" /><label for=-->
+                                                                                                                                         <!--"GroupGroup5" class="selected">Member Admin Team</label>-->
+                    <!--</div>-->
+
+                    <!--<div class="checkbox">-->
+                        <!--<input type="checkbox" name="data[Group][Group][]" checked="checked" value="7" id="GroupGroup7" /><label for=-->
+                                                                                                                                         <!--"GroupGroup7" class="selected">Membership Team</label>-->
+                    <!--</div>-->
+
+                    <!--<div class="checkbox">-->
+                        <!--<input type="checkbox" name="data[Group][Group][]" checked="checked" value="3" id="GroupGroup3" /><label for=-->
+                                                                                                                                         <!--"GroupGroup3" class="selected">Snackspace admin</label>-->
+                    <!--</div>-->
+
+                    <!--<div class="checkbox">-->
+                        <!--<input type="checkbox" name="data[Group][Group][]" value="6" id="GroupGroup6" /><label for="GroupGroup6">Young-->
+                        <!--Adult Hackers</label>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</fieldset>-->
+
+            <!--<fieldset>-->
+                <!--<legend>Mailing Lists</legend>-->
+
+                <!--<div class="input select">-->
+                    <!--<input type="hidden" name="data[MailingLists][MailingLists]" value="" id="MailingListsMailingLists" />-->
+
+                    <!--<div class="checkbox">-->
+                        <!--<input type="checkbox" name="data[MailingLists][MailingLists][]" checked="checked" value="0a6da449c9" id=-->
+                                <!--"MailingListsMailingLists0a6da449c9" /><label for="MailingListsMailingLists0a6da449c9" class="selected">Nottingham-->
+                        <!--Hackspace Announcements</label>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</fieldset>-->
+
+            <div class="submit">
+                <button type="submit">Update</button>
+            </div>
+        <!--</fieldset>-->
+    </form>
+
+</div>
+</body>
+</html>

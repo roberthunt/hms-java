@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layouts/default">
+<head>
+    <title>Groups</title>
+</head>
+<body>
+    <div layout:fragment="crumbs">
+        <a th:replace="fragments/breadcrumbs :: home">Home</a>
+        &gt;
+        <a th:replace="fragments/breadcrumbs :: groups">Groups</a>
+    </div>
+    <div layout:fragment="content">
+        <table>
+            <tr>
+                <th>Permission</th>
+                <th th:each="group : ${groups}">
+                    <a th:href="${#mvc.url('GC#view').arg(0, group.id).build()}" th:text="${group.description}"></a>
+                </th>
+            </tr>
+            <tr th:each="permission : ${permissions}">
+                <td th:text="${permission.description}"></td>
+                <td th:each="group : ${groups}" th:text="${group.hasPermission(permission.code) ? 'X' : '-'}"></td>
+            </tr>
+            <tr>
+                <td class="actions"></td>
+                <td class="actions" th:each="group : ${groups}">
+                    <a th:href="${#mvc.url('GC#edit').arg(0, group.id).build()}">Edit</a>
+                </td>
+            </tr>
+
+        </table>
+    </div>
+</body>
+</html>

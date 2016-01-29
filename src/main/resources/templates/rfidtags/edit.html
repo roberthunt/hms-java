@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html layout:decorator="layouts/default">
+<head>
+    <title>RFID Cards</title>
+</head>
+<body layout:fragment="content">
+
+    <div id="crumb">
+        <a th:replace="fragments/breadcrumbs :: home">Home</a>
+        &gt;
+        <a th:replace="fragments/breadcrumbs :: members">Members</a>
+        &gt;
+        <!--<a th:href="${#mvc.url('MC#view').arg(0, rfidTag.member.id).build()}" th:text="${rfidTag.member.username}">Member</a>-->
+        <!--<a th:replace="fragments/breadcrumbs :: member(${member})">Member</a>-->
+        &gt;
+        <!--<a th:href="${#mvc.url('RTC#list').arg(0, rfidTag.member.id).build()}">Registered Cards</a>-->
+        &gt;
+        <!--<a th:href="${#mvc.url('RTC#list').arg(0, rfidTag.serial).build()}"  th:text="${rfidTag.serial}">Card</a>-->
+    </div>
+
+    <form id="RfidTagEditForm" action="#" th:action="${#mvc.url('RTC#edit').build()}" th:object="${rfidTag}" method="post">
+        <table>
+            <tr>
+                <td>
+                    Card Serial
+                    <input type="hidden" th:field="*{serial}" />
+                </td>
+                <td th:text="*{serial}"></td>
+            </tr>
+            <tr>
+                <td>
+                    Last Used
+                    <input type="hidden" th:field="*{lastUsed}" />
+                </td>
+                <td th:text="*{lastUsed} ? *{#temporals.format(lastUsed, 'dd/MM/YYYY HH:mm:ss')}"></td>
+            </tr>
+            <tr>
+                <td>
+                    <label for="RfidTagFriendlyName" class="required">Card Name</label>
+                </td>
+                <td>
+                    <div class="input text" th:classappend="${#fields.hasErrors('friendlyName')}? error">
+                        <input id="RfidTagFriendlyName" type="text" th:field="*{friendlyName}" th:errorclass="form-error"/>
+                        <div th:if="${#fields.hasErrors('friendlyName')}"  th:errors="*{friendlyName}" class="error-message"></div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>State</td>
+                <td>
+                    <div class="input select required">
+                        <select id="RfidTagState" th:field="*{state}">
+                            <option th:each="state : ${T(uk.org.nottinghack.domain.RfidTagState).values()}"
+                                    th:value="${state}"
+                                    th:text="${state.name}">Expired</option>
+                        </select>
+                    </div>
+                </td>
+            </tr>
+        </table>
+        <div class="submit">
+            <input type="submit" value="Update"/>
+        </div>
+    </form>
+
+</body>
+</html>

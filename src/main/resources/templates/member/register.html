@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html layout:decorator="layouts/default">
+<head>
+    <title>Members</title>
+</head>
+<body>
+    <div layout:fragment="crumbs">
+        <a th:replace="fragments/breadcrumbs :: home">Home</a>
+        &gt;
+        <a th:replace="fragments/breadcrumbs :: members">Members</a>
+        &gt;
+        <a th:replace="fragments/breadcrumbs :: register">Register Member</a>
+    </div>
+    <div layout:fragment="content">
+        <form id="RegistrationForm" action="#" th:action="${#mvc.url('MLC#register').build()}" th:object="${registrationForm}" method="post">
+            <div class="input email required">
+                <label for="MemberEmail">Email</label>
+                <input id="MemberEmail" maxlength="100" type="email"  th:field="*{email}" th:errorclass="form-error" required="required"/>
+            </div>
+
+            <fieldset>
+                <legend>Mailing Lists</legend>Please tick the boxes the mailing list(s) you&#39;d like to subscribe to.
+                <div class="input select">
+                    <div class="checkbox" th:each="list : ${allMailingLists}">
+                        <input type="checkbox" th:field="*{mailingListIds}" th:value="${list.id}" />
+                        <label th:for="${#ids.prev('mailingListIds')}"
+                               th:text="${list.name}">Announcements</label>
+                    </div>
+                </div>
+            </fieldset>
+
+            <div class="submit">
+                <input type="submit" value="Register" />
+            </div>
+        </form>
+    </div>
+</body>
+</html>

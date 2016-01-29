@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layouts/default">
+<head>
+    <title>Members</title>
+</head>
+<body>
+    <div layout:fragment="crumbs">
+        <a th:replace="fragments/breadcrumbs :: home">Home</a>
+        &gt;
+        <a th:href="${#mvc.url('HC#status').build()}">Status</a>
+    </div>
+    <div layout:fragment="content">
+        <table>
+            <tr>
+                <th>Id</th>
+                <th>Title</th>
+            </tr>
+            <tr th:each="memberStatus : ${memberStatuses}">
+                <td th:text="${memberStatus.id}"></td>
+                <td th:text="${memberStatus.title}"></td>
+            </tr>
+        </table>
+    </div>
+</body>
+</html>

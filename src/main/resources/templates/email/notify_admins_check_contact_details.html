@@ -1,0 +1,15 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html layout:decorator="layouts/email">
+<head>
+	<title>Check Contact Details</title>
+</head>
+<body layout:fragment="content" th:inline="text">
+	<p>
+		New prospective member!
+	</p>
+	<p>
+		We have some contact details for [[${member.email}]]. Please
+		<a th:href="${#mvc.url('MC#view').arg(0, member.id).build()}">check them</a>.
+	</p>
+</body>
+</html>

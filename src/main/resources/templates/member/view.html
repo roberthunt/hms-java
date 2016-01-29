@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layouts/default">
+<head>
+    <title>Members</title>
+</head>
+<body>
+    <div layout:fragment="crumbs">
+        <a th:replace="fragments/breadcrumbs :: home">Home</a>
+        &gt;
+        <a th:replace="fragments/breadcrumbs :: members">Members</a>
+        &gt;
+        <a th:replace="fragments/breadcrumbs :: member(${member})">Member</a>
+    </div>
+    <div layout:fragment="content">
+
+        <th:block th:switch="${member.status}">
+            <th:block th:case="${T(uk.org.nottinghack.domain.MemberStatus).PROSPECTIVE_MEMBER}">Prospective Member</th:block>
+            <th:block th:case="${T(uk.org.nottinghack.domain.MemberStatus).WAITING_FOR_CONTACT_DETAILS}">Waiting For Contact Details</th:block>
+            <th:block th:case="${T(uk.org.nottinghack.domain.MemberStatus).WAITING_FOR_MEMBERSHIP_ADMIN_TO_APPROVE_CONTACT_DETAILS}">Waiting for Membership Admin To Approve Contact Details</th:block>
+            <th:block th:case="${T(uk.org.nottinghack.domain.MemberStatus).WAITING_FOR_STANDING_ORDER_PAYMENT}">Waiting For Standing Order Payment</th:block>
+            <th:block th:case="${T(uk.org.nottinghack.domain.MemberStatus).CURRENT_MEMBER}">Current Member</th:block>
+            <th:block th:case="${T(uk.org.nottinghack.domain.MemberStatus).EX_MEMBER}">Ex Member</th:block>
+        </th:block>
+
+        <dl>
+            <th:block th:if="${member.username}">
+                <dt>Username</dt>
+                <dd th:text="${member.username}"/>
+            </th:block>
+
+            <th:block th:if="${member.firstname}">
+                <dt>First Name</dt>
+                <dd th:text="${member.firstname}"/>
+            </th:block>
+
+            <th:block th:if="${member.surname}">
+                <dt>Surname</dt>
+                <dd th:text="${member.surname}"/>
+            </th:block>
+
+            <th:block th:if="${member.email}">
+                <dt>Email</dt>
+                <dd th:text="${member.email}"/>
+            </th:block>
+
+            <th:block th:if="${member.joinDate}">
+                <dt>Member Since</dt>
+                <dd th:text="${#temporals.format(member.joinDate, 'yyyy-MM-dd')}"/>
+            </th:block>
+
+            <th:block th:if="${member.unlockText}">
+                <dt>Unlock Text</dt>
+                <dd th:text="${member.unlockText}"/>
+            </th:block>
+
+            <th:block th:if="${member.groups}">
+                <dt>Groups</dt>
+                <dd>
+                    <a th:each="group : ${member.groups}" th:text="${group.description}"
+                       th:href="${#mvc.url('GC#view').arg(0, group.id).build()}">Group</a>
+                    <th:block th:if="${member.groups.isEmpty()}">None</th:block>
+                </dd>
+            </th:block>
+
+            <th:block th:if="${member.status}">
+                <dt>Status</dt>
+                <dd>
+                    <a th:href="${#mvc.url('MLC#listMembersWithStatus').arg(0, member.status.id).build()}"
+                       th:text="${member.status.title}">Current Member</a>
+                </dd>
+            </th:block>
+
+            <th:block th:unless="${#lists.isEmpty(member.pins)}">
+                <dt>Pin</dt>
+                <dd>
+                    <th:block th:each="pin : ${member.pins}">
+                        <th:block th:text="${pin.pin}"/>
+                        <br/>
+                    </th:block>
+                </dd>
+            </th:block>
+
+            <th:block th:unless="${#lists.isEmpty(member.cards)}">
+                <dt>Registered Cards</dt>
+                <dd>
+                    <a th:href="${#mvc.url('RTC#list').arg(0, member.id).build()}">
+                        <th:block th:text="${#lists.size(member.cards)}"></th:block>
+                        <th:block th:switch="${#lists.size(member.cards)}">
+                            <th:block th:case="1">card</th:block>
+                            <th:block th:case="*">cards</th:block>
+                        </th:block>
+                        registered
+                    </a>
+                </dd>
+            </th:block>
+
+            <th:block th:if="${member.balance}">
+                <dt>Current Balance</dt>
+                <dd>
+                    <a th:href="${#mvc.url('TC#list').arg(0, member.id).build()}"
+                       th:include="fragments/currency::format(${member.balanceInPounds})">0</a>
+                </dd>
+            </th:block>
+
+            <th:block th:if="${member.creditLimit}">
+                <dt>Credit Limit</dt>
+                <dd th:include="fragments/currency::format(${member.creditLimitInPounds})">0</dd>
+            </th:block>
+
+            <th:block th:if="${member.account?.paymentReference}">
+                <dt>Account Ref</dt>
+                <dd th:text="${member.account.paymentReference}"/>
+            </th:block>
+
+            <th:block th:if="${member.addressLines}">
+                <dt>Address</dt>
+                <dd>
+                    <th:block th:each="addressLine : ${member.addressLines}">
+                        <th:block th:text="${addressLine}"/>
+                        <br/>
+                    </th:block>
+                    <th:block th:unless="${member.hasAddress()}">None</th:block>
+                </dd>
+            </th:block>
+
+            <th:block th:if="${member.contactNumber}">
+                <dt>Contact No.</dt>
+                <dd th:if="${member.hasContactNumber()}" th:text="${member.contactNumber}"/>
+                <dd th:if="${!member.hasContactNumber()}">None</dd>
+            </th:block>
+
+            <dt>
+                Mailing Lists
+            </dt>
+            <dd>
+                <!-- Yeah, we're going to need to get hold of them somehow -->
+                None
+            </dd>
+
+            <th:block th:if="${latestStatusUpdate}">
+                <th:block th:unless="${#strings.isEmpty(latestStatusUpdate.description)}">
+                    <dt>Last Status Update</dt>
+                    <dd>
+                        <th:block th:text="${latestStatusUpdate.description}"/>
+                        by
+                        <a th:replace="fragments/breadcrumbs :: member(${latestStatusUpdate.admin})">Member</a>
+                        on
+                        <th:block th:text="${#temporals.format(latestStatusUpdate.timestamp, 'dd-MMM-yyyy ''at'' HH:mm')}"/>
+                    </dd>
+                </th:block>
+            </th:block>
+
+            <dt>Last Email</dt>
+            <dd>
+                <th:block th:if="${latestEmail}">
+                    <th:block th:text="${latestEmail.subject}"/>
+                    on
+                    <th:block th:text="${#temporals.format(latestEmail.timestamp, 'dd-MMM-yyyy ''at'' HH:mm')}"/>
+                </th:block>
+                <th:block th:unless="${latestEmail}">
+                    None
+                </th:block>
+            </dd>
+        </dl>
+
+        <div class="actions">
+            <ul class="nav">
+                <li>
+                    <a th:replace="fragments/breadcrumbs :: memberEmails(${member}, 'View Email History')">View Email History</a>
+                </li>
+                <li>
+                    <a th:href="${#mvc.url('MC#editForm').arg(0, member.id).build()}">Edit</a>
+                </li>
+                <li>
+                    <a th:href="${#mvc.url('MC#editPasswordForm').arg(0, member.id).build()}">ChangePassword</a>
+                </li>
+                <li>
+                    <a href="/hms/members/revokeMembership/177" class="negative">Revoke Membership</a>
+                </li>
+                <li>
+                    <a href="/hms/members/sendSoDetailsReminder/177">Send SO Details Reminder</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

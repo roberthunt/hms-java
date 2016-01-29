@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html layout:decorator="layouts/default">
+<head>
+    <title>Members</title>
+</head>
+<body>
+<div layout:fragment="content">
+
+    <div id="crumb">
+        <a th:replace="fragments/breadcrumbs :: home">Home</a>
+        &gt;
+        <a th:replace="fragments/breadcrumbs :: members">Members</a>
+    </div>
+
+    <!-- New Stuff -->
+    <div th:if="${param.error}">
+        <div id="flashMessage" class="message">Invalid username or password, try again</div>
+    </div>
+    <div th:if="${param.logout}">
+        <div id="flashMessage" class="message">You have been logged out.</div>
+    </div>
+
+    <form th:action="@{/login}" method="post" id="UserLoginForm" accept-charset="utf-8">
+        <fieldset>
+            <legend>Please enter your username and password</legend>
+
+            <div class="input text">
+                <label for="UserUsernameOrEmail">Username or Email</label>
+                <input name="username" type="text" id="UserUsernameOrEmail"/>
+            </div>
+
+            <div class="input password">
+                <label for="UserPassword">Password</label>
+                <input name="password" type="password" id="UserPassword"/>
+            </div>
+
+            <a href="/members/forgotPassword">Forgot Password?</a>
+        </fieldset>
+
+        <div class="submit">
+            <input type="submit" value="Sign In"/>
+        </div>
+    </form>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html layout:decorator="layouts/default">
+<head>
+    <title>Transactions</title>
+</head>
+<body>
+<div layout:fragment="content">
+
+    <div id="crumb">
+
+    </div>
+
+    <dl>
+        <dt>
+            Balance
+        </dt>
+        <dd>
+            <th:block th:include="fragments/currency::format(${balance})">0</th:block>
+        </dd>
+    </dl>
+    <table>
+        <tr>
+            <th>Date</th>
+            <th>Type</th>
+            <th>Description</th>
+            <th>Amount</th>
+            <th>amount - raw</th>
+        </tr>
+        <tr th:each="transaction : ${transactions}">
+            <td th:text="${#temporals.format(transaction.dateTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
+            <td th:text="${transaction.type}"></td>
+            <td th:text="${transaction.description}"></td>
+            <td th:include="fragments/currency::format(${transaction.amountInPounds})"></td>
+            <td th:text="${transaction.amount}"></td>
+        </tr>
+    </table>
+
+    <th:block th:include="fragments/paginator::paginate(${transactions}, ${#mvc.url('TC#list').arg(0, memberId).build()})"/>
+
+    <th:block th:if="${!transactions.hasContent()}">No transactions found!</th:block>
+
+</div>
+</body>
+</html>

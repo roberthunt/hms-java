@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<body th:fragment="paginate(page, url)">
+    <div class="paginate">
+        <span th:each="num : ${T(uk.org.nottinghack.util.Paginator).paginate(page.number + 1, page.totalPages, 8)}"
+              th:class="(${num} == ${page.number} + 1)? 'current'">
+            <a th:text="${num}"
+               th:href="${url} + '?page=' + (${num} - 1)"
+               th:unless="${num} == ${page.number} + 1">
+                1
+            </a>
+            <th:block th:text="${num}" th:if="${num} == ${page.number} + 1"></th:block>
+            <th:block th:text="'&#124;'" th:unless="${numStat.last}"></th:block>
+        </span>
+    </div>
+</body>
+</html>

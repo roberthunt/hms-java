@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<body>
+    <th:block th:fragment="format(pounds)">
+        <span th:if="${pounds} &gt;= 0"
+              th:text="${'&pound;' + #numbers.formatDecimal(pounds, 1, 'DEFAULT', 2, 'DEFAULT')}" />
+        <span th:if="${pounds} &lt; 0"
+              th:text="${'-&pound;' + #numbers.formatDecimal(pounds * -1, 1, 'DEFAULT', 2, 'DEFAULT')}"
+              class="currency_negative" />
+    </th:block>
+</body>
+</html>

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html layout:decorator="layouts/default">
+<head>
+    <title th:text="${tool.name}"></title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/tool.css}" />
+</head>
+<body layout:fragment="content">
+    <h2 th:text="${tool.name}">Tool Name</h2>
+
+    <p>To add a booking, click on any white area in the calendar below.</p>
+    <p>
+        <a href="">Subscribe to Calendar</a> |
+        <a th:href="${#mvc.url('TBC#listBookings').arg(0, tool.id).build()}">List / Cancel Bookings</a>
+    </p>
+
+    <div class="calendarnav">
+        <a th:href="${#mvc.url('TC#viewTool').arg(0, tool.id).arg(1, #temporals.format(lastPeriodStart, 'yyyy-MM-dd')).build()}">
+            <img th:src="@{/img/icon_arrow_left.png}" alt="Previous Week" title="Previous Week" class="navleft" />
+        </a>
+        <a th:href="${#mvc.url('TC#viewTool').arg(0, tool.id).arg(1, #temporals.format(nextPeriodStart, 'yyyy-MM-dd')).build()}">
+            <img th:src="@{/img/icon_arrow_right.png}" alt="Next Week" title="Next Week" class="navright" />
+        </a>
+        <div class="key">
+            <div class="normal">Booking</div>
+            <div class="induction">Induction</div>
+            <div class="maintenance">Maintenance</div>
+        </div>
+    </div>
+
+    <!--/* draw the calendar */-->
+    <div class="toolscalendar" cellspacing="0" cellpadding="0">
+        <table>
+            <tr>
+                <th width="50">&nbsp;</th>
+                <th th:each="periodDay : ${thisPeriodDays}" width="127" th:text="${#temporals.format(periodDay, 'E, dd/MM/yyyy')}"></th>
+            </tr>
+            <tr th:each="timeSlot, iterStat : ${timeSlots}">
+
+                <td th:if="${iterStat.even}" class="time" rowspan="2">
+                    <span th:text="${#temporals.format(timeSlot, 'HH:mm')}"></span>
+                </td>
+
+                <td th:each="periodDay : ${thisPeriodDays}"
+                    th:with="inPast=${(periodDay eq now.toLocalDate() and timeSlot lt now.toLocalTime().minusMinutes(30)) or periodDay lt now.toLocalDate()}"
+                    th:class="(${iterStat.even} ? 'light' : '') + ' ' + (${inPast} ? 'past' : '')">
+
+                    <!--/* add a link to create a new booking unless the timeslot is in the past */-->
+                    <a th:unless="${inPast}" th:href="${#mvc.url('TBC#addBooking').arg(0, tool.id).arg(1, #temporals.formatISO(periodDay.atTime(timeSlot))).build()}"></a>
+                </td>
+            </tr>
+        </table>
+
+        <!--/* draw the bookings on the calendar */-->
+        <th:block th:each="periodDay, iterStat : ${thisPeriodDays}"
+                  th:with="MINUTES_IN_DAY=${T(java.util.concurrent.TimeUnit).DAYS.toMinutes(1)},
+                           MINUTES_IN_HOUR=${T(java.util.concurrent.TimeUnit).HOURS.toMinutes(1)}">
+
+            <th:block th:each="booking : ${bookings}"
+                      th:with="commonClasses='event ' + ${booking.type.description} + ' day_' + ${iterStat.count},
+                               startsToday=${booking.start.toLocalDate().equals(periodDay)},
+                               endsToday=${booking.end.toLocalDate().equals(periodDay)},
+                               spansToday=${booking.start.toLocalDate().isBefore(periodDay) and booking.end.toLocalDate().isAfter(periodDay)}">
+
+                <div th:if="${startsToday and endsToday}"
+                     th:class="${commonClasses} + ' start_' + ${#temporals.format(booking.start, 'HHmm')} + ' len_' + ${booking.durationInMinutes}"
+                     th:text="${booking.title}">
+                </div>
+
+                <div th:if="${startsToday and not endsToday}"
+                     th:class="${commonClasses} + ' start_' + ${#temporals.format(booking.start, 'HHmm')} + ' len_' + ${MINUTES_IN_DAY - (booking.start.hour * MINUTES_IN_HOUR + booking.start.minute)}"
+                     th:text="${booking.title}">
+                </div>
+
+                <div th:if="${endsToday and not startsToday}"
+                     th:class="${commonClasses} + ' start_0000' + ' len_' + ${booking.end.hour * MINUTES_IN_HOUR + booking.end.minute}"
+                     th:text="'&#x21b3; ' + ${booking.title}">
+                </div>
+
+                <div th:if="${spansToday}"
+                     th:class="${commonClasses} + ' start_0000' + ' len_' + ${MINUTES_IN_DAY}"
+                     th:text="'&#x21b3; ' + ${booking.title}">
+                </div>
+
+            </th:block>
+        </th:block>
+
+    </div>
+
+    <div th:replace="this :: .calendarnav"></div>
+</body>
+</html>

@@ -1,0 +1,79 @@
+# Database Configuration
+spring.datasource.url: 'jdbc:mysql://localhost/hms_java?zeroDateTimeBehavior=convertToNull'
+spring.datasource.username: root
+spring.datasource.password:
+spring.datasource.driver-class-name: com.mysql.jdbc.Driver
+
+# Specify the DBMS
+spring.jpa.database: MYSQL
+
+# sets the application locale to a fixed locale rather than using the "Accept-Language" header from the request
+spring.mvc.locale: 'en_GB'
+
+server.port: 8090
+server.session.persistent: true
+
+# development settings
+spring.jpa.properties.hibernate.generate_statistics: true
+spring.jpa.show-sql: true
+spring.thymeleaf.cache: false
+
+logging.level.org.springframework.security: INFO
+logging.level.org.thymeleaf.extras.springsecurity4.auth.AuthUtils: TRACE
+logging.level.org.springframework.aop: DEBUG
+logging.level.org.hibernate.stat: DEBUG
+
+# email configuration
+spring.mail.host: 'mailtrap.io'
+spring.mail.port: 465
+spring.mail.username:
+spring.mail.password:
+spring.mail.debug: true
+
+# HMS Application Configuration
+
+# used when sending links to the application externally eg: in emails
+hms.server.url: 'https://lspace.nottinghack.org.uk/hms'
+
+# required for authentication
+hms.kerberos.realm: NOTTINGTEST.ORG.UK
+hms.kerberos.kdc:
+# required to register new members and change passwords
+hms.kerberos.principal: hms/web
+hms.kerberos.keytab: /path/to/hms.keytab
+
+# subnet to allow registrations from
+hms.register.subnet: 0:0:0:0:0:0:0:1
+
+hms.company.number: '01234567'
+hms.company.details: 'Nottingham Hackspace Ltd, , , No. 01234567, Reg. in England & Wales'
+hms.company.address: 'Unit F6 BizSpace, Roden House Business Centre, Nottingham, NG3 1JH'
+
+hms.bank.account.number: '12345678'
+hms.bank.account.sort: '00-00-00'
+hms.bank.account.name: Nottinghack
+
+hms.member.guide: 'http://wiki.nottinghack.org.uk/wiki/File:Nottingham-hackspace-manual-web-Nov2011.pdf'
+hms.member.rules: 'http://wiki.nottinghack.org.uk/wiki/Category:Rules'
+
+hms.access.door.street: '1234'
+hms.access.door.inner: '1234'
+hms.access.wifi.ssid: 'WIFI'
+hms.access.wifi.password: '12345678'
+
+hms.mailchip.apikey:
+
+hms.news.rss: 'http://nottinghack.org.uk/?feed=rss2'
+hms.space.api: 'http://lspace.nottinghack.org.uk/status/status.php'
+
+hms.space.time.open: '6:30 pm'
+hms.space.time.close: '9:00 pm'
+
+hms.version: '16/DEV'
+hms.web.source: 'https://github.com/NottingHack/hms'
+hms.web.site: 'http://www.nottinghack.org.uk'
+hms.web.twitter: 'http://twitter.com/#!/hsnotts'
+hms.web.youtube: 'http://www.youtube.com/user/nottinghack'
+hms.web.mailinglist: 'http://groups.google.com/group/nottinghack'
+hms.web.facebook: 'https://www.facebook.com/nottinghack'
+hms.web.flickr: 'http://www.flickr.com/photos/nottinghack'

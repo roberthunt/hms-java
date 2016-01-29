@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html layout:decorator="layouts/default">
+<head>
+    <title>Tools</title>
+</head>
+<body>
+    <div layout:fragment="crumbs">
+        <a th:replace="fragments/breadcrumbs :: home">Home</a>
+        &gt;
+        <a th:replace="fragments/breadcrumbs :: tools">Tools</a>
+    </div>
+    <div layout:fragment="content">
+        <h2>Tools</h2>
+
+        <table th:unless="${#lists.isEmpty(tools)}">
+            <tr>
+                <th>&nbsp;</th>
+                <th>Tool</th>
+                <th>Status</th>
+                <th>Cost per hour</th>
+                <th>Next booking</th>
+            </tr>
+            <tr th:each="tool : ${tools}">
+                <td width="25"><a th:href="${#mvc.url('TC#viewTool').arg(0, tool.id).build()}"><img th:src="@{/img/icon_calendar.png}" alt="Access Tool" title="Access Tool"/></a></td>
+                <td>
+                    <a th:href="${#mvc.url('TC#viewTool').arg(0, tool.id).build()}" th:text="${tool.name}"></a>
+                </td>
+                <td th:style="${tool.disabled}? 'background-color: #FF0000'" th:text="${tool.status.description}"></td>
+                <td>&pound;<th:block th:text="${#numbers.formatDecimal(tool.poundsPerHour, 1, 'DEFAULT', 2, 'DEFAULT')}"></th:block></td>
+                <td>
+                    <th:block th:if="${tool.nextBooking}" th:text="${#temporals.format(tool.nextBooking.start, 'dd MMMM yyyy @ HH:mm')}"></th:block>
+                </td>
+            </tr>
+        </table>
+    </div>
+</body>
+</html>

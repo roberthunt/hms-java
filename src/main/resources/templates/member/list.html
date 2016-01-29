@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html layout:decorator="layouts/default">
+<head>
+    <title>Members</title>
+</head>
+<body>
+<div layout:fragment="content">
+
+    <div id="crumb">
+        <a th:replace="fragments/breadcrumbs :: home">Home</a>
+        &gt;
+        <a th:replace="fragments/breadcrumbs :: members">Members</a>
+        &gt;
+        <a th:href="${#mvc.url('MLC#listMembersWithStatus').arg(0, id).build()}"
+           th:if="${memberStatus}"
+           th:text="${memberStatus.title}">Prospective Member</a>
+    </div>
+
+    <table th:if="${members.hasContent()}">
+        <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Groups</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+        <!--<a th:each="group : ${member.groups}" th:text="${group.description}" th:href="${#mvc.url('GC#view').arg(0, group.id).build()}">Group</a>-->
+        <tr th:each="member : ${members}">
+            <td>
+                <a th:text="${member.fullName}" th:href="${#mvc.url('MC#view').arg(0, member.id).build()}">Member Name</a>
+            </td>
+            <td th:text="${member.email}"></td>
+            <td>
+                <?php
+                        $numGroups = count($member['groups']);
+                        if($numGroups === 0)
+                        {
+                            echo 'None';
+                        }
+                        else
+                        {
+                            for($i = 0; $i < $numGroups; $i++) {
+                                echo $this->Html->link($member['groups'][$i]['description'], array('controller' => 'groups', 'action' => 'view', $member['groups'][$i]['id']));
+                if($i < $numGroups - 1)
+                {
+                echo ', ';
+                }
+                }
+                }
+                ?>
+            </td>
+            <td>
+                <?php echo $this->Html->link($member['status']['name'], array('controller' => 'members', 'action' => 'listMembersWithStatus', $member['status']['id'])); ?>
+            </td>
+            <td>
+                <?php
+                        foreach ($member['actions'] as $action)
+                        {
+                            $linkOptions = $action['params'];
+                            $linkOptions['controller'] = $action['controller'];
+                            $linkOptions['action'] = $action['action'];
+
+                            echo $this->Html->link($action['title'], $linkOptions);
+                }
+                ?>
+            </td>
+        </tr>
+        <?php endforeach; ?>
+    </table>
+
+    <th:block th:if="${id}" th:include="fragments/paginator::paginate(${members}, ${#mvc.url('MLC#listMembersWithStatus').arg(0, id).build()})"/>
+    <th:block th:unless="${id}" th:include="fragments/paginator::paginate(${members}, ${#mvc.url('MLC#listMembers').build()})"/>
+
+    <div class="paginate">
+        <?php echo $this->Paginator->numbers(); ?>
+
+    </div>
+
+    <p th:unless="${members.hasContent()}"> No members to list. </p>
+
+</div>
+</body>
+</html>

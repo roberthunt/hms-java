@@ -1,0 +1,17 @@
+List of known issues that should be resolved, some may have been inherited from HMS-PHP
+
+- The delete confirmation JavaScript on the tool booking is a bit ropey, pressing no and then clicking on another
+booking results in the dialog containing multiple times.
+
+- Try and resolve jQuery/jQuery UI from Webjars so we don't need a local copy in the source
+
+- The table row padding on the list tool and list tool booking page seems to differ from HMS-PHP slightly for an unknown
+reason
+
+- It's not possible to format dates with ordinals in Java (st, nd, rd, th) [CAN'T FIX]
+
+- pagination on the members list is broken when used with no status (all members) or a search query
+
+- snackspace currency figure not working
+
+- group entity could link to the permission entity

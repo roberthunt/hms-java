@@ -1,0 +1,19 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html layout:decorator="layouts/email">
+<head>
+	<title>Contact Details Reminder</title>
+</head>
+<body layout:fragment="content" th:inline="text">
+	<p>
+		Hello!
+	</p>
+	<p>
+		Just a quick e-mail to remind you that we still need some contact details from you in order to progress your
+        membership. If you'd like to enter your details, please click <a th:href="@{/login}">here</a>
+	</p>
+	<p>
+		Thanks,<br>
+		Nottinghack Member Admin Team
+	</p>
+</body>
+</html>

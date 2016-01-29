@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html layout:decorator="layouts/default">
+    <head>
+        <title>RFID Cards</title>
+    </head>
+    <body>
+        <div layout:fragment="content">
+
+            <div id="crumb">
+                <a th:replace="fragments/breadcrumbs :: home">Home</a>
+                &gt;
+                <a th:replace="fragments/breadcrumbs :: members">Members</a>
+                &gt;
+                <a th:replace="fragments/breadcrumbs :: member(${member})">Member</a>
+                &gt;
+                <a th:href="${#mvc.url('RTC#list').arg(0, member.id).build()}">Registered Cards</a>
+            </div>
+
+            <div id="flashMessage" class="message" th:if="${message}" th:text="${message}">Flash Message</div>
+
+            <table>
+                <tr>
+                    <th>Card Serial Number</th>
+                    <th>Last Used</th>
+                    <th>Card Name</th>
+                    <th>Card State</th>
+                    <th />
+                </tr>
+                <tr th:each="card : ${memberCards}">
+                    <td th:text="${card.serial}">0123456789</td>
+                    <td th:text="${card.lastUsed} ? ${#temporals.format(card.lastUsed, 'dd/MM/YYYY HH:mm:ss')}"></td>
+                    <td th:text="${card.friendlyName}">Oyster Card</td>
+                    <td th:text="${card.state.name}">Active</td>
+                    <td><a th:href="${#mvc.url('RTC#editForm').arg(0, card.serial).build()}">Edit Card</a></td>
+                </tr>
+            </table>
+
+        </div>
+    </body>
+</html>

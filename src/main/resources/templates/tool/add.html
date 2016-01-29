@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html layout:decorator="layouts/default">
+<head>
+    <title>Tools</title>
+</head>
+<body layout:fragment="content">
+
+    <h2>Add Tool</h2>
+
+    <form action="/hms/tools/add" id="ToolAddForm" method="post" accept-charset="utf-8">
+        <div style="display:none;">
+            <input type="hidden" name="_method" value="POST"/>
+        </div>
+
+        <div class="input text required">
+            <label for="ToolToolName">Name</label>
+            <input name="data[Tool][tool_name]" maxlength="20" type="text" id="ToolToolName" required="required"/>
+        </div>
+
+        <div class="input select">
+            <label for="ToolToolRestrictions">Restricted?</label>
+            <select name="data[Tool][tool_restrictions]" id="ToolToolRestrictions">
+                <option value="UNRESTRICTED">Unrestricted</option>
+                <option value="RESTRICTED">Restricted</option>
+            </select>
+
+            <select>
+                <option th:each="restriction : ${T(uk.org.nottinghack.domain.tool.ToolRestrictionType).values()}"
+                        th:value="${restriction}"
+                        th:text="${restriction.description}"></option>
+            </select>
+
+
+        </div>
+
+        <div class="input number">
+            <label for="ToolToolPph">Cost (pence per hour)</label>
+            <input name="data[Tool][tool_pph]" type="number" id="ToolToolPph"/>
+        </div>
+
+        <div class="input number">
+            <label for="ToolToolBookingLength">Default booking length (minutes)</label>
+            <input name="data[Tool][tool_booking_length]" type="number" id="ToolToolBookingLength"/>
+        </div>
+
+        <div class="input number">
+            <label for="ToolToolLengthMax">Maximum booking length (minutes)</label>
+            <input name="data[Tool][tool_length_max]" type="number" id="ToolToolLengthMax"/>
+        </div>
+
+        <div class="input number">
+            <label for="ToolToolBookingsMax">Maximum number of booking per user</label>
+            <input name="data[Tool][tool_bookings_max]" type="number" id="ToolToolBookingsMax"/>
+        </div>
+
+        <div class="submit">
+            <input  type="submit" value="Save Tool"/>
+        </div>
+    </form>
+
+</body>
+</html>

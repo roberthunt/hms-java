@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html layout:decorator="layouts/default">
+<head>
+    <title>Members</title>
+</head>
+<body>
+<div layout:fragment="content">
+
+    <div id="crumb">
+        <a th:replace="fragments/breadcrumbs :: home">Home</a>
+        &gt;
+        <a th:replace="fragments/breadcrumbs :: members">Members</a>
+    </div>
+
+    <div class="search">
+        <form action="#" th:action="${#mvc.url('MLC#listMembers').build()}" method="get" accept-charset="utf-8">
+            <div class="input text">
+                <label for="memberQuery"></label>
+                <input id="memberQuery" type="text" name="query" />
+            </div>
+            <div class="submit">
+                <input type="submit" value="Search"/>
+            </div>
+        </form>
+    </div>
+
+    <h3>Summary</h3>
+
+    <table>
+        <tr>
+            <th>
+                Member Status
+            </th>
+            <th>
+                No. Members with this status
+            </th>
+        </tr>
+        <tr th:each="memberStatus : ${memberCountsByStatus}">
+            <td>
+                <a th:href="${#mvc.url('MLC#listMembersWithStatus').arg(0, memberStatus.key.id).build()}"
+                   th:text="${memberStatus.key.title}">Prospective Member</a>
+            </td>
+            <td th:text="${memberStatus.value}">55</td>
+        </tr>
+        <tr>
+            <td>
+                <a th:href="${#mvc.url('MLC#listMembers').build()}">Total</a>
+            </td>
+            <td th:text="${memberCount}">100</td>
+        </tr>
+    </table>
+
+    <!-- These are generated from the controller via NavHelper in HMS-PHP -->
+    <div class="actions">
+        <ul class="nav">
+            <li><a th:href="${#mvc.url('MLC#registrationForm').build()}">Register Member</a></li>
+            <li><a th:href="${#mvc.url('MLC#emailMembersWithStatus').arg(0, 5).build()}">E-mail all current member</a></li>
+            <li><a th:href="${#mvc.url('MLC#uploadCsv').arg(0, 5).build()}">Upload CSV</a></li>
+        </ul>
+    </div>
+
+</div>
+</body>
+</html>

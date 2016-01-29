@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html layout:decorator="layouts/default">
+    <head>
+        <title>Emails</title>
+    </head>
+    <body>
+    <div layout:fragment="crumbs">
+            <a th:replace="fragments/breadcrumbs :: home">Home</a>
+            &gt;
+            <a th:replace="fragments/breadcrumbs :: members">Members</a>
+            &gt;
+            <a th:replace="fragments/breadcrumbs :: member(${member})">Member</a>
+            &gt;
+            <a th:replace="fragments/breadcrumbs :: memberEmails(${member}, 'Emails')">Emails</a>
+        </div>
+        <div layout:fragment="content">
+            <h3>All E-mail Records for <th:block th:text="${member.bestName}"></th:block></h3>
+
+            <th:block th:each="emails : ${memberEmails}">
+                <div class="emailRecordDay">
+                    <h4 th:text="${#temporals.format(emails.key, 'dd MMMM yyyy')}"></h4>
+                    <ul>
+                        <li th:each="email : ${emails.value}">
+                            <th:block th:text="${#temporals.format(email.timestamp, 'HH:mm')}"></th:block>
+                            -
+                            <th:block th:text="${email.subject}"></th:block>
+                            to
+                            <a th:href="${#mvc.url('MC#view').arg(0, member.id).build()}" th:text="${email.member.bestName}">Member</a>
+                        </li>
+                    </ul>
+                </div>
+            </th:block>
+        </div>
+    </body>
+</html>

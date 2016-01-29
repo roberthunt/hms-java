@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+    <body>
+        <a th:fragment="home" th:href="${#mvc.url('HC#index').build()}">Home</a>
+        <a th:fragment="members" th:href="${#mvc.url('MLC#index').build()}">Members</a>
+        <a th:fragment="member(member)" th:href="${#mvc.url('MC#view').arg(0, member.id).build()}" th:text="${member.username}">Member</a>
+        <a th:fragment="groups" th:href="${#mvc.url('GC#index').build()}">Groups</a>
+        <a th:fragment="memberEmails(member, text)" th:href="${#mvc.url('MC#viewEmails').arg(0, member.id).build()}" th:text="${text}"></a>
+        <a th:fragment="tools" th:href="${#mvc.url('TC#listTools').build()}">Tools</a>
+        <a th:fragment="register" th:href="${#mvc.url('MLC#registrationForm').build()}">Register Member</a>
+    </body>
+</html>

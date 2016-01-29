@@ -1,0 +1,24 @@
+showFinances - (admin users OR viewing own profile) AND is (CURRENT_MEMBER OR EX_MEMBER)
+showPersonalDetails - (full access OR membership admin OR viewing own profile)
+showAdminFeatures - full access OR membership admin OR membership team
+
+AdminFeatures
+- Pins
+- Status Updates
+- Groups
+
+Finances
+- Balance
+- Credit Limit
+
+Personal Details
+- Address 1
+- Address 2
+- Address City
+- Address Postcode
+- Contact Number
+
+Has Joined (member status = CURRENT_MEMBER OR EX_MEMBER)
+- Join Date
+- Unlock Text
+
