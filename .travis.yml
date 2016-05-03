@@ -16,5 +16,5 @@ before_install:
 - rm deploy-key.enc
 - chmod 600 deploy-key
 - mv deploy-key ~/.ssh/id_rsa
-after_succes:
+after_success:
 - scp target/target/hms-1.0-SNAPSHOT.jar deploy@139.59.171.13:/home/deploy/hms-java.jar
