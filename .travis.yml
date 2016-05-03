@@ -3,6 +3,8 @@ jdk:
 - oraclejdk8
 services:
 - mysql
+addons:
+  ssh_known_hosts: 139.59.171.13
 cache:
   directories:
   - $HOME/.m2
