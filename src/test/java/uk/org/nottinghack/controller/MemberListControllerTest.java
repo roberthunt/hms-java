@@ -97,35 +97,6 @@ public class MemberListControllerTest
                 .build();
     }
 
-    // TODO: maybe the expression fails because the principal is not a Member object? It's just a string in the mocked ctx
-
-    @Test
-    public void testViewMember() throws Exception
-    {
-        Member found = new MemberBuilder()
-                .firstAddressLine("First Address Line")
-                .status(MemberStatus.CURRENT_MEMBER)
-                .build();
-
-        when(memberServiceMock.getMember(1)).thenReturn(found);
-
-        Member principal = new Member();
-        principal.setUsername("user");
-
-        // MockMvc doesn't support AssertJ so we're stuck with Hamcrest :(
-        mockMvc.perform(get("/members/{id}", 1).with(user(principal)))
-                .andExpect(status().isOk())
-                .andExpect(view().name("member/view"))
-                .andExpect(forwardedUrl("member/view"))
-                .andExpect(model().attribute("member", hasProperty("id", is(1))))
-                .andExpect(model().attribute("member", hasProperty("firstAddressLine", is("First Address Line"))));
-
-        verify(memberServiceMock, times(1)).getMember(1);
-        verify(memberServiceMock, times(1)).getLatestEmailForMember(1);
-        verify(memberServiceMock, times(1)).getLatestStatusUpdateForMember(1);
-        verifyNoMoreInteractions(memberServiceMock);
-    }
-
     private ResultActions viewMember(Member member) throws Exception
     {
         when(memberServiceMock.getMember(anyInt())).thenReturn(member);

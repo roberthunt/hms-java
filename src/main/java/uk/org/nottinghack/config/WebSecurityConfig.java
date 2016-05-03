@@ -40,7 +40,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter
     @Autowired
     private UserDetailsService userDetailsService;
 
-    @Profile(Profiles.TEST)
+    @Profile(Profiles.CONTINUOUS_INTEGRATION)
     @Bean
     public UserDetailsService testUserDetailsService()
     {
