@@ -5,13 +5,13 @@ services:
 - mysql
 cache:
   directories:
-  - "$HOME/.m2"
+  - $HOME/.m2
 install: true
 before_script:
 - mysql -e 'create database hms_java_test;'
-script: "./mvnw install"
+script: ./mvnw install
 before_install:
-- openssl aes-256-cbc -K $encrypted_25bf942686cb_key -iv $encrypted_25bf942686cb_iv
+- openssl aes-256-cbc -K $encrypted_46c97dd4b2de_key -iv $encrypted_46c97dd4b2de_iv
   -in deploy-key.enc -out deploy-key -d
 - rm deploy-key.enc
 - chmod 600 deploy-key
