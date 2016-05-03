@@ -215,6 +215,12 @@
             <version>5.1.34</version>
         </dependency>
 
+        <!-- Database Migration Tool -->
+        <dependency>
+            <groupId>org.flywaydb</groupId>
+            <artifactId>flyway-core</artifactId>
+        </dependency>
+
         <!-- Jackson Hibernate support -->
         <dependency>
             <groupId>com.fasterxml.jackson.datatype</groupId>
@@ -222,6 +228,7 @@
             <version>${jackson.version}</version>
         </dependency>
 
+        <!-- Jackson java.time support (JSR310) -->
         <dependency>
             <groupId>com.fasterxml.jackson.datatype</groupId>
             <artifactId>jackson-datatype-jsr310</artifactId>
