@@ -1,0 +1,12 @@
+language: java
+jdk:
+  - oraclejdk8
+services:
+ - mysql
+cache:
+  directories:
+  - $HOME/.m2
+install: true
+before_script:
+  - mysql -e 'create database hms_java;'
+script: ./mvnw install
