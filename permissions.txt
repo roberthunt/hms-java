@@ -22,3 +22,125 @@ Has Joined (member status = CURRENT_MEMBER OR EX_MEMBER)
 - Join Date
 - Unlock Text
 
+
+sanitiseMemberInfo
+
+!showAdminFeatures :: inGroup(FULL_ACCESS, MEMBERSHIP_ADMIN, MEMBERSHIP_TEAM)
+	- Pin
+	- StatusUpdate
+	- Group
+
+!showFinances :: (showAdminFeatures or viewingOwnProfile) AND hasJoined
+	- Member.balance
+	- Member.credit_limit
+
+!hasJoined :: member_status IN (CURRENT_MEMBER, EX_MEMBER)
+	- Member.join_date
+	- Member.unlock_text
+
+!showAccount
+	- Member.account_id
+	- Account
+
+!showAdminFeatures or !showStatus
+	- Status
+	- Member.member_status
+
+!showPersonalDetails :: inGroup(FULL_ACCESS, MEMBERSHIP_ADMIN) OR viewingOwnProfile
+	- Member.address_1
+	- Member.address_2
+	- Member.address_city
+	- Member.account_postcode
+	- Member.contact_number
+
+unsetIfNull
+	- username
+	- firstname
+	- surname
+	- account_id
+	- contact_number
+	- address_1
+	- address_2
+	- address_city
+	- address_postcode
+	- contact_number
+
+ViewOwnMember
+
+ViewOtherMember
+    WhoHasNotJoined
+        shouldNotSeeJoinDate
+        shouldNotSeeUnlockText
+        AsMemberWithPermission
+            ViewMemberAdminFeatures
+                shouldSeePin
+                shouldSeeStatusUpdate
+                shouldSeeGroups
+                shouldSeeBalance
+                shouldSeeCreditLimit
+            ViewMemberPersonalDetails
+                shouldSeeAddress
+                shouldSeeContactNumber
+        AsMemberWithNoPermissions
+            shouldNotSeePin
+            shouldNotSeeStatusUpdate
+            shouldNotSeeGroups
+            shouldNotSeeAddress
+            shouldNotSeeContactNumber
+            shouldNotSeeBalance
+            shouldNotSeeCreditLimit
+    WhoHasJoined
+        shouldSeeJoinDate
+        shouldSeeUnlockText
+        AsMemberWithPermission
+            ViewMemberAdminFeatures
+                shouldSeeBalance
+                shouldSeeCreditLimit
+
+
+ViewOtherMember
+
+... (seems to be 3 cases: viewing self, viewing other and don't care / *)
+... OR (MemberWhoIsCurrentUser, MememberWhoHasNotJoined, MemberWhoHasJoined)
+ViewingOtherMember
+
+    WhoHasJoined
+        shouldSeeJoinDate
+        shouldSeeUnlockText
+
+        AsUserWithPermission
+            ViewMemberAdminFeatures
+                shouldSeeBalance
+                shouldSeeCreditLimit
+
+    WhoHasNotJoined
+        shouldNotSeeJoinDate
+        shouldNotSeeUnlockText
+
+        AsUserWithPermission
+            ViewMemberAdminFeatures
+                shouldNotSeeBalance
+                shouldNotSeeCreditLimit
+
+ViewingOwnMember
+
+    shouldSeeBalance
+    shouldSeeCreditLimit
+
+ViewingMember
+    AsUserWithPermission
+        ViewMemberAdminFeatures
+            shouldSeePin
+            shouldSeeStatusUpdate
+            shouldSeeGroups
+
+EXISTING TESTS
+- hit each controller action (url mapping) and check that access is only granted with the correct permissions testIsAuthorized()
+- test the remote address check works (to hide the register button / prinlt label button outside the space)
+
+- register existing current member
+- register eisting ex member
+- register existing prospective member
+
+- view other member should redirect (bad permission)
+- verify the visible action buttons depending on the permission (some buttons may change depending on the state of the user being viewed)

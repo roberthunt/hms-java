@@ -14,45 +14,26 @@
         <a th:replace="fragments/breadcrumbs :: member(${member})">Member</a>
     </div>
 
-    <!--<form action="/hms/members/edit/177" id="MemberEditForm" method="post" accept-charset="utf-8">-->
-    <form action="#" th:action="@{/members/edit}" th:object="${member}" method="post">
+    <form action="#" th:action="@{/members/{id}/edit(id=*{id})}" th:object="${member}" method="post"
+          th:with="MEM=${T(uk.org.nottinghack.domain.Member)}">
 
         <input type="hidden" th:field="*{id}" />
 
-        <div class="input text required">
-            <label for="username" th:text="#{member.username}">Username</label>
-            <input type="text" id="username" th:field="*{username}" required="required" th:maxlength="${T(uk.org.nottinghack.domain.Member).USERNAME_MAX_LENGTH}"/>
-        </div>
+        <div th:replace="fragments/form::field('username', 'member.username', 'text', true, ${MEM.USERNAME_MAX_LENGTH})"></div>
 
-        <div class="input text required">
-            <label for="firstname" th:text="#{member.firstname}">Firstname</label>
-            <input type="text" id="firstname" th:field="*{firstname}" required="required" th:maxlength="${T(uk.org.nottinghack.domain.Member).FIRSTNAME_MAX_LENGTH}"/>
-        </div>
+        <div th:replace="fragments/form::field('firstname', 'member.firstname', 'text', true, ${MEM.FIRSTNAME_MAX_LENGTH})"></div>
 
-        <div class="input text required">
-            <label for="surname" th:text="#{member.surname}">Surname</label>
-            <input type="text" id="surname" th:field="*{surname}" required="required" th:maxlength="${T(uk.org.nottinghack.domain.Member).SURNAME_MAX_LENGTH}"/>
-        </div>
+        <div th:replace="fragments/form::field('surname', 'member.surname', 'text', true, ${MEM.SURNAME_MAX_LENGTH})"></div>
 
-        <!--<div class="input email required">-->
-            <!--<label for="MemberEmail">Email</label><input name="data[Member][email]" maxlength="100" type="email" value=-->
-                <!--"" id="MemberEmail" required="required" />-->
-        <!--</div>-->
+        <div th:replace="fragments/form::field('email', 'member.email', 'email', true, ${MEM.EMAIL_MAX_LENGTH})"></div>
 
-        <!--<div class="input text required">-->
-            <!--<label for="MemberUnlockText">Unlock Text</label><input name="data[Member][unlock_text]" maxlength="95" type="text"-->
-                                                                    <!--value="" id="MemberUnlockText" required="required" />-->
-        <!--</div>-->
+        <div th:replace="fragments/form::field('unlockText', 'member.unlock_text', 'text', true, ${MEM.UNLOCK_TEXT_MAX_LENGTH})"></div>
 
-        <!--<div class="input text required">-->
-            <!--<label for="MemberAddress1">Address part 1 (House name/number and street)</label><input name="data[Member][address_1]"-->
-                                                                                                    <!--maxlength="100" type="text" value="" id="MemberAddress1" required="required" />-->
-        <!--</div>-->
+        <div th:replace="fragments/form::field('firstAddressLine', 'member.address1', 'text', true, ${MEM.ADDRESS_LINE_MAX_LENGTH})"></div>
 
-        <!--<div class="input text">-->
-            <!--<label for="MemberAddress2">Address part 2</label><input name="data[Member][address_2]" maxlength="100" type="text"-->
-                                                                     <!--value="" id="MemberAddress2" />-->
-        <!--</div>-->
+        <div th:replace="fragments/form::field('secondAddressLine', 'member.address2', 'text', false, ${MEM.ADDRESS_LINE_MAX_LENGTH})"></div>
+
+        <div th:replace="fragments/form::field('city', 'member.city', 'text', true, ${MEM.ADDRESS_LINE_MAX_LENGTH})"></div>
 
         <!--<div class="input text required">-->
             <!--<label for="MemberAddressCity">City</label><input name="data[Member][address_city]" maxlength="100" type="text" value=-->

@@ -1,7 +1,7 @@
 package uk.org.nottinghack.domain.bank;
 
 /**
- * Created by Rob on 16/02/2015.
+ * @author <a href="rob.hunt@nottinghack.org.uk">Robert Hunt</a>
  */
 public enum NatwestBankTransactionType
 {

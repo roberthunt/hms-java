@@ -12,4 +12,14 @@ import java.util.List;
 public interface MailinglistService
 {
     List<MailingList> getMailingLists();
+
+    MailingList getMailingList(String listId);
+
+    List<String> getSubscribers(String listId);
+
+    boolean subscribe(String listId, String email);
+
+    boolean unsubscribe(String listId, String email);
+
+    boolean isSubscriber(String listId, String email);
 }

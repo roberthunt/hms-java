@@ -1,9 +1,12 @@
 package uk.org.nottinghack.service;
 
+import uk.org.nottinghack.domain.EmailTemplate;
+import uk.org.nottinghack.domain.Member;
+
 /**
- * Created by rob on 05/11/15.
+ * @author <a href="rob.hunt@nottinghack.org.uk">Robert Hunt</a>
  */
 public interface EmailService
 {
-    void send(String to, String subject, String body);
+    void send(EmailTemplate template, Member member);
 }

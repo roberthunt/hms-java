@@ -236,3 +236,14 @@ Libraries Used
 - Hibernate ORM
 - Apache Tomcat
 - Thymeleaf Template Engine
+
+Tests
+
+In certain tests relating to permissions and visibility of fields to various users you may notice the use of
+'Matchers.notNullValue()' during the verification rather than checking for a specific value, for example:
+
+.andExpect(model().attribute("member", hasProperty("joinDate", Matchers.notNullValue())));
+
+We don't actually care if the "joinDate" property is correct in this case, we're only interested that the property is
+visible and hasn't been excluded due to permissions. This means that the test isn't concerned with any logic that may
+transform the property between the entity and the view and is more resilient to changes.

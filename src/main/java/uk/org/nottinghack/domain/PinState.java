@@ -1,7 +1,7 @@
 package uk.org.nottinghack.domain;
 
 /**
- * Created by Rob on 09/01/2015.
+ * @author <a href="rob.hunt@nottinghack.org.uk">Robert Hunt</a>
  */
 public enum PinState
 {

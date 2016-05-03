@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 /**
- * Created by Rob on 08/01/2015.
+ * @author <a href="rob.hunt@nottinghack.org.uk">Robert Hunt</a>
  */
 @Entity
 @Table(name = "account")

@@ -1,0 +1,39 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "title": "Subscriber Lists",
+  "description": "A collection of subscriber lists associated with this account. Lists contain subscribers who have opted-in to receive correspondence from you or your organization.",
+  "properties": {
+    "lists": {
+      "type": "array",
+      "items": {"$ref": "https://us1.api.mailchimp.com/schema/3.0/Lists/Instance.json"},
+      "title": "Lists",
+      "description": "An array of objects, each representing a list resource."
+    },
+    "total_items": {"$ref": "https://us1.api.mailchimp.com/schema/3.0/Generics/TotalItems.json"},
+    "_links": {"$ref": "https://us1.api.mailchimp.com/schema/3.0/Generics/ResourceLinkArray.json"}
+  },
+  "instance_container": "lists",
+  "display_name": "name",
+  "links": [
+    {
+      "rel": "self",
+      "href": "https://us1.api.mailchimp.com/3.0/lists",
+      "method": "GET",
+      "targetSchema": "https://us1.api.mailchimp.com/schema/3.0/Lists/Collection.json",
+      "schema": "https://us1.api.mailchimp.com/schema/3.0/CollectionLinks/Lists.json"
+    },
+    {
+      "rel": "parent",
+      "href": "https://us1.api.mailchimp.com/3.0/",
+      "method": "GET",
+      "targetSchema": "https://us1.api.mailchimp.com/schema/3.0/Root.json"
+    },
+    {
+      "rel": "create",
+      "href": "https://us1.api.mailchimp.com/3.0/lists",
+      "method": "POST",
+      "schema": "https://us1.api.mailchimp.com/schema/3.0/Lists/Instance.json"
+    }
+  ]
+}

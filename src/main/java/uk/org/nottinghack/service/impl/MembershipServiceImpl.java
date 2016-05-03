@@ -3,9 +3,11 @@ package uk.org.nottinghack.service.impl;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import uk.org.nottinghack.domain.EmailTemplate;
 import uk.org.nottinghack.domain.Member;
 import uk.org.nottinghack.domain.MemberStatus;
 import uk.org.nottinghack.exception.ExistingMemberException;
+import uk.org.nottinghack.service.EmailService;
 import uk.org.nottinghack.service.MemberService;
 import uk.org.nottinghack.service.MembershipService;
 
@@ -17,8 +19,15 @@ import java.util.Optional;
 @Service
 public class MembershipServiceImpl implements MembershipService
 {
+    private final MemberService memberService;
+    private final  EmailService emailService;
+
     @Autowired
-    private MemberService memberService;
+    public MembershipServiceImpl(MemberService memberService, EmailService emailService)
+    {
+        this.memberService = memberService;
+        this.emailService = emailService;
+    }
 
     @Override
     public void acceptContactDetails(@NotNull Integer prospectiveMemberId, @NotNull Integer adminMemberId)
@@ -74,6 +83,8 @@ public class MembershipServiceImpl implements MembershipService
             Member member = new Member();
             member.setEmail(emailAddress);
             member.setStatus(MemberStatus.PROSPECTIVE_MEMBER);
+
+            emailService.send(EmailTemplate.NOTIFY_ADMINS_MEMBER_ADDED, member);
         }
 
         return null;

@@ -1,0 +1,10 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<body th:fragment="field(name, messageRef, fieldType, required, maxLength)">
+    <div th:class="'input ' + ${fieldType} + (${required} ? ' required ' : ' ') + (${#fields.hasErrors('__${name}__')} ? 'error' : '')">
+        <label th:for="${name}" th:text="#{${messageRef}}">Field Name</label>
+        <input th:id="${name}" th:type="${fieldType}" th:field="*{__${name}__}" th:required="${required}" th:errorclass="form-error" th:maxlength="${maxLength}"/>
+        <div th:if="${#fields.hasErrors('__${name}__')}" th:errors="*{__${name}__}" class="error-message"></div>
+    </div>
+</body>
+</html>

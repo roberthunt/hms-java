@@ -13,7 +13,7 @@ import javax.security.auth.login.LoginContext;
 import javax.security.auth.login.LoginException;
 
 /**
- * Created by Rob on 18/06/2015.
+ * @author <a href="rob.hunt@nottinghack.org.uk">Robert Hunt</a>
  */
 public class HmsAuthenticationProvider extends AbstractUserDetailsAuthenticationProvider
 {

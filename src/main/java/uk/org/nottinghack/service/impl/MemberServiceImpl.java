@@ -123,6 +123,13 @@ public class MemberServiceImpl implements MemberService
     @PreAuthorize("#member.id == principal.id or hasAuthority('" + Permission.EDIT_OTHER_MEMBERS + "')")
     public void updateMember(Member member)
     {
+        Member existingMember = memberRepository.findById(member.getId()).orElseThrow(() -> new MemberNotFoundException(member.getId()));
+
+        existingMember.setFirstname(member.getFirstname());
+        existingMember.setSurname(member.getSurname());
+
+        memberRepository.save(existingMember);
+
         // TODO: lookup existing member
         // merge editable fields into existing entity
         // check for change before merging

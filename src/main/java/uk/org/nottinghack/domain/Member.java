@@ -24,6 +24,9 @@ public class Member implements UserDetails, Serializable
     public static final int USERNAME_MAX_LENGTH = 50;
     public static final int FIRSTNAME_MAX_LENGTH = 100;
     public static final int SURNAME_MAX_LENGTH = 100;
+    public static final int EMAIL_MAX_LENGTH = 100;
+    public static final int UNLOCK_TEXT_MAX_LENGTH = 95;
+    public static final int ADDRESS_LINE_MAX_LENGTH = 100;
 
     @Id
     @GeneratedValue
@@ -31,32 +34,36 @@ public class Member implements UserDetails, Serializable
     private int id;
 
     @Column(name = "firstname", length = FIRSTNAME_MAX_LENGTH)
+    @Size(min = 1, max = FIRSTNAME_MAX_LENGTH, message = "Cannot be more than " + FIRSTNAME_MAX_LENGTH + " characters long")
     private String firstname;
 
     @Column(name = "surname", length = SURNAME_MAX_LENGTH)
+    @Size(min = 1, max = SURNAME_MAX_LENGTH, message = "Cannot be more than " + SURNAME_MAX_LENGTH + " characters long")
     private String surname;
 
-    @Column(name = "email", length = 100, nullable = false)
+    @Column(name = "email", length = EMAIL_MAX_LENGTH, nullable = false)
+    @Size(min = 1, max = EMAIL_MAX_LENGTH, message = "{CUST}")
     private String email;
 
     @Column(name = "join_date", nullable = false)
     private LocalDate joinDate;
 
-    @Column(name = "unlock_text", length = 95)
+    @Column(name = "unlock_text", length = UNLOCK_TEXT_MAX_LENGTH)
+    @Size(max = UNLOCK_TEXT_MAX_LENGTH, message = "Cannot be more than " + UNLOCK_TEXT_MAX_LENGTH + " characters long")
     private String unlockText;
 
     @Column(name = "balance", nullable = false)
-    private int balance;
+    private Integer balance;
 
     @Column(name = "credit_limit", nullable = false)
-    private int creditLimit;
+    private Integer creditLimit;
 
     @Convert(converter = MemberStatusAttributeConverter.class)
     @Column(name = "member_status", nullable = false)
     private MemberStatus status;
 
     @Column(name = "username", length = USERNAME_MAX_LENGTH)
-    @Size(max = USERNAME_MAX_LENGTH)
+    @Size(min = 1, max = USERNAME_MAX_LENGTH, message = "Cannot be more than " + USERNAME_MAX_LENGTH + " characters long")
     private String username;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -64,15 +71,19 @@ public class Member implements UserDetails, Serializable
     private Account account;
 
     @Column(name = "address_1", length = 100)
+    @Size(max = ADDRESS_LINE_MAX_LENGTH, message = "Cannot be more than " + ADDRESS_LINE_MAX_LENGTH + " characters long")
     private String firstAddressLine;
 
     @Column(name = "address_2", length = 100)
+    @Size(max = ADDRESS_LINE_MAX_LENGTH, message = "Cannot be more than " + ADDRESS_LINE_MAX_LENGTH + " characters long")
     private String secondAddressLine;
 
     @Column(name = "address_city", length = 100)
+    @Size(max = ADDRESS_LINE_MAX_LENGTH, message = "Cannot be more than " + ADDRESS_LINE_MAX_LENGTH + " characters long")
     private String city;
 
     @Column(name = "address_postcode", length = 100)
+    @Size(max = ADDRESS_LINE_MAX_LENGTH, message = "Cannot be more than " + ADDRESS_LINE_MAX_LENGTH + " characters long")
     private String postcode;
 
     @Column(name = "contact_number", length = 20)
@@ -93,24 +104,21 @@ public class Member implements UserDetails, Serializable
     @JoinTable(name = "member_group",
                joinColumns = {@JoinColumn(name="member_id", referencedColumnName="member_id")},
                inverseJoinColumns = {@JoinColumn(name="grp_id", referencedColumnName="grp_id")})
-    private Set<Group> groups;
+    private Set<Group> groups = Collections.EMPTY_SET;
 
     // transient fields are generated at runtime and not part of the persistent entity
     @Transient
     private Set<GrantedAuthority> grantedAuthorities;
-
-    @Transient
-    private List<String> addressLines;
 
     public Member()
     {
         // default no-arg constructor
     }
 
-    public Member(int id, String firstname, String surname, String email, LocalDate joinDate, String unlockText, int balance,
-                  int creditLimit, MemberStatus status, String username, Account account, String firstAddressLine,
-                  String secondAddressLine, String city, String postcode, String contactNumber, Set<Pin> pins,
-                  Set<Group> groups)
+    public Member(int id, String firstname, String surname, String email, LocalDate joinDate, String unlockText,
+                  Integer balance, Integer creditLimit, MemberStatus status, String username, Account account,
+                  String firstAddressLine, String secondAddressLine, String city, String postcode, String contactNumber,
+                  Set<Pin> pins, Set<Group> groups)
     {
         this.id = id;
         this.firstname = firstname;
@@ -179,6 +187,7 @@ public class Member implements UserDetails, Serializable
         return joinDate;
     }
 
+    @PreAuthorize("this.isCurrentOrEx()")
     public void setJoinDate(LocalDate joinDate)
     {
         this.joinDate = joinDate;
@@ -191,6 +200,7 @@ public class Member implements UserDetails, Serializable
         return unlockText;
     }
 
+    @PreAuthorize("this.isCurrentOrEx()")
     public void setUnlockText(String unlockText)
     {
         this.unlockText = unlockText;
@@ -198,24 +208,24 @@ public class Member implements UserDetails, Serializable
 
     @ReturnNullOnAccessDenied
     @PreAuthorize("this.isCurrentOrEx() and (hasAuthority('" + Permission.VIEW_MEMBER_ADMIN_FEATURES + "') or principal.id == this.id)")
-    public int getBalance()
+    public Integer getBalance()
     {
         return balance;
     }
 
-    public void setBalance(int balance)
+    public void setBalance(Integer balance)
     {
         this.balance = balance;
     }
 
     @ReturnNullOnAccessDenied
     @PreAuthorize("this.isCurrentOrEx() and (hasAuthority('" + Permission.VIEW_MEMBER_ADMIN_FEATURES + "') or principal.id == this.id)")
-    public int getCreditLimit()
+    public Integer getCreditLimit()
     {
         return creditLimit;
     }
 
-    public void setCreditLimit(int creditLimit)
+    public void setCreditLimit(Integer creditLimit)
     {
         this.creditLimit = creditLimit;
     }
@@ -225,7 +235,6 @@ public class Member implements UserDetails, Serializable
         return status;
     }
 
-    // TODO: setting the status directly would bypass the workflow but we probably needs the setter for the ORM...
     public void setStatus(MemberStatus status)
     {
         this.status = status;
@@ -261,7 +270,6 @@ public class Member implements UserDetails, Serializable
     public void setFirstAddressLine(String firstAddressLine)
     {
         this.firstAddressLine = firstAddressLine;
-        invalidateAddressLines();
     }
 
     @ReturnNullOnAccessDenied
@@ -274,7 +282,6 @@ public class Member implements UserDetails, Serializable
     public void setSecondAddressLine(String secondAddressLine)
     {
         this.secondAddressLine = secondAddressLine;
-        invalidateAddressLines();
     }
 
     @ReturnNullOnAccessDenied
@@ -287,7 +294,6 @@ public class Member implements UserDetails, Serializable
     public void setCity(String city)
     {
         this.city = city;
-        invalidateAddressLines();
     }
 
     @ReturnNullOnAccessDenied
@@ -300,7 +306,6 @@ public class Member implements UserDetails, Serializable
     public void setPostcode(String postcode)
     {
         this.postcode = postcode;
-        invalidateAddressLines();
     }
 
     @ReturnNullOnAccessDenied
@@ -350,105 +355,7 @@ public class Member implements UserDetails, Serializable
     }
 
     /**
-     * Gets the member's username if it has been set otherwise returns their email address.
-     * @return
-     */
-    public String getUsernameOrEmail()
-    {
-        return username != null ? username : email;
-    }
-
-    /**
-     * Gets the member's full name by concatenating the firstname and surname.
-     * @return full members name.
-     */
-    public String getFullName()
-    {
-        String firstname = getFirstname() != null ? getFirstname() : "";
-        String surname = getSurname() != null ? getSurname() : "";
-        return (firstname + surname).isEmpty() ? "" : firstname + " " + surname;
-    }
-
-    /**
-     * Gets the best available name for the member by concatenating the firstname and surname if the firstname is
-     * present otherwise the member's email address is returned.
-     * @return best members name.
-     */
-    public String getBestName()
-    {
-        return getFullName().isEmpty() ? getEmail() :getFullName();
-    }
-
-    /**
-     * Returns an array of address lines by assembling non-null address components.
-     * @return
-     */
-    public String[] getAddressLines()
-    {
-        if (addressLines == null)
-        {
-            addressLines = new ArrayList<>();
-
-            if (getFirstAddressLine() != null)
-            {
-                addressLines.add(firstAddressLine);
-            }
-            if (getSecondAddressLine() != null)
-            {
-                addressLines.add(secondAddressLine);
-            }
-            if (getCity() != null)
-            {
-                addressLines.add(city);
-            }
-            if (getPostcode() != null)
-            {
-                addressLines.add(postcode);
-            }
-        }
-
-        return addressLines.toArray(new String[0]);
-    }
-
-    /**
-     * Returns true if there is at least one address component for this member.
-     * @return
-     */
-    public boolean hasAddress()
-    {
-        return getAddressLines().length > 0;
-    }
-
-    private void invalidateAddressLines()
-    {
-        addressLines = null;
-    }
-
-    /**
-     * Returns true if the member has a non-null and non-empty contact number.
-     * @return
-     */
-    public boolean hasContactNumber()
-    {
-        if (getContactNumber() != null && contactNumber.trim().length() > 0)
-        {
-            return true;
-        }
-        return false;
-    }
-
-    public double getBalanceInPounds()
-    {
-        return getBalance() / 100;
-    }
-
-    public double getCreditLimitInPounds()
-    {
-        return getCreditLimit() / 100;
-    }
-
-    /**
-     * This is equivalent to 'hasJoined' in HMS PHP
+     * Has this member ever been a full member, this is equivalent to 'hasJoined' in HMS PHP.
      */
     public boolean isCurrentOrEx()
     {
@@ -509,15 +416,15 @@ public class Member implements UserDetails, Serializable
             }
         }
         // TODO: TESTING ONLY
-        grantedAuthorities.add(new SimpleGrantedAuthority(Permission.VIEW_OTHER_MEMBERS));
-        grantedAuthorities.add(new SimpleGrantedAuthority(Permission.VIEW_MEMBER_ADMIN_FEATURES));
-        grantedAuthorities.add(new SimpleGrantedAuthority(Permission.VIEW_EMAILS));
-        grantedAuthorities.add(new SimpleGrantedAuthority(Permission.VIEW_OTHER_RFID_CARDS));
-        grantedAuthorities.add(new SimpleGrantedAuthority(Permission.VIEW_MEMBER_PERSONAL_DETAILS));
-//        grantedAuthorities.add(new SimpleGrantedAuthority(Permission.VIEW_MEMBER_FINANCES));
-
-        grantedAuthorities.add(new SimpleGrantedAuthority(Permission.VIEW_TOOLS));
-        grantedAuthorities.add(new SimpleGrantedAuthority(Permission.ADD_TOOL));
+//        grantedAuthorities.add(new SimpleGrantedAuthority(Permission.VIEW_OTHER_MEMBERS));
+//        grantedAuthorities.add(new SimpleGrantedAuthority(Permission.VIEW_MEMBER_ADMIN_FEATURES));
+//        grantedAuthorities.add(new SimpleGrantedAuthority(Permission.VIEW_EMAILS));
+//        grantedAuthorities.add(new SimpleGrantedAuthority(Permission.VIEW_OTHER_RFID_CARDS));
+//        grantedAuthorities.add(new SimpleGrantedAuthority(Permission.VIEW_MEMBER_PERSONAL_DETAILS));
+////        grantedAuthorities.add(new SimpleGrantedAuthority(Permission.VIEW_MEMBER_FINANCES));
+//
+//        grantedAuthorities.add(new SimpleGrantedAuthority(Permission.VIEW_TOOLS));
+//        grantedAuthorities.add(new SimpleGrantedAuthority(Permission.ADD_TOOL));
 
         return grantedAuthorities;
     }
@@ -531,7 +438,8 @@ public class Member implements UserDetails, Serializable
     @Override
     public String getPassword()
     {
-        throw new UnsupportedOperationException("Access of the member's password is unsupported");
+        return "";
+        //throw new UnsupportedOperationException("Access of the member's password is unsupported");
     }
 
     /**

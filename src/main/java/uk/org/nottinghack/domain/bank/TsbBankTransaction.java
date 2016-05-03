@@ -5,7 +5,7 @@ import java.time.LocalDate;
 
 
 /**
- * Created by Rob on 16/02/2015.
+ * @author <a href="rob.hunt@nottinghack.org.uk">Robert Hunt</a>
  */
 public class TsbBankTransaction
 {

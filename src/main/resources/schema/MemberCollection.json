@@ -1,0 +1,44 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "title": "List Members",
+  "description": "Individuals who are currently or have been previously suscribed to this list, including members who have bounced or unsubscribed.",
+  "properties": {
+    "members": {
+      "type": "array",
+      "items": {"$ref": "https://us1.api.mailchimp.com/schema/3.0/Lists/Members/Instance.json"},
+      "title": "Members",
+      "description": "An array of objects, each representing a member resource."
+    },
+    "list_id": {
+      "type": "string",
+      "title": "List ID",
+      "description": "The list id."
+    },
+    "total_items": {"$ref": "https://us1.api.mailchimp.com/schema/3.0/Generics/TotalItems.json"},
+    "_links": {"$ref": "https://us1.api.mailchimp.com/schema/3.0/Generics/ResourceLinkArray.json"}
+  },
+  "instance_container": "members",
+  "display_name": "email_address",
+  "links": [
+    {
+      "rel": "self",
+      "href": "https://us1.api.mailchimp.com/3.0/lists/{list_id}/members",
+      "method": "GET",
+      "targetSchema": "https://us1.api.mailchimp.com/schema/3.0/Lists/Members/Collection.json",
+      "schema": "https://us1.api.mailchimp.com/schema/3.0/CollectionLinks/Lists/Members.json"
+    },
+    {
+      "rel": "parent",
+      "href": "https://us1.api.mailchimp.com/3.0/lists/{list_id}",
+      "method": "GET",
+      "targetSchema": "https://us1.api.mailchimp.com/schema/3.0/Lists/Instance.json"
+    },
+    {
+      "rel": "create",
+      "href": "https://us1.api.mailchimp.com/3.0/lists/{list_id}/members",
+      "method": "POST",
+      "schema": "https://us1.api.mailchimp.com/schema/3.0/Lists/Members/Instance.json"
+    }
+  ]
+}

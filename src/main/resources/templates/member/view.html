@@ -14,14 +14,15 @@
     </div>
     <div layout:fragment="content">
 
-        <th:block th:switch="${member.status}">
-            <th:block th:case="${T(uk.org.nottinghack.domain.MemberStatus).PROSPECTIVE_MEMBER}">Prospective Member</th:block>
-            <th:block th:case="${T(uk.org.nottinghack.domain.MemberStatus).WAITING_FOR_CONTACT_DETAILS}">Waiting For Contact Details</th:block>
-            <th:block th:case="${T(uk.org.nottinghack.domain.MemberStatus).WAITING_FOR_MEMBERSHIP_ADMIN_TO_APPROVE_CONTACT_DETAILS}">Waiting for Membership Admin To Approve Contact Details</th:block>
-            <th:block th:case="${T(uk.org.nottinghack.domain.MemberStatus).WAITING_FOR_STANDING_ORDER_PAYMENT}">Waiting For Standing Order Payment</th:block>
-            <th:block th:case="${T(uk.org.nottinghack.domain.MemberStatus).CURRENT_MEMBER}">Current Member</th:block>
-            <th:block th:case="${T(uk.org.nottinghack.domain.MemberStatus).EX_MEMBER}">Ex Member</th:block>
-        </th:block>
+        <!-- TODO: Can't remember why I left this here -->
+        <!--<th:block th:switch="${member.status}">-->
+            <!--<th:block th:case="${T(uk.org.nottinghack.domain.MemberStatus).PROSPECTIVE_MEMBER}">Prospective Member</th:block>-->
+            <!--<th:block th:case="${T(uk.org.nottinghack.domain.MemberStatus).WAITING_FOR_CONTACT_DETAILS}">Waiting For Contact Details</th:block>-->
+            <!--<th:block th:case="${T(uk.org.nottinghack.domain.MemberStatus).WAITING_FOR_MEMBERSHIP_ADMIN_TO_APPROVE_CONTACT_DETAILS}">Waiting for Membership Admin To Approve Contact Details</th:block>-->
+            <!--<th:block th:case="${T(uk.org.nottinghack.domain.MemberStatus).WAITING_FOR_STANDING_ORDER_PAYMENT}">Waiting For Standing Order Payment</th:block>-->
+            <!--<th:block th:case="${T(uk.org.nottinghack.domain.MemberStatus).CURRENT_MEMBER}">Current Member</th:block>-->
+            <!--<th:block th:case="${T(uk.org.nottinghack.domain.MemberStatus).EX_MEMBER}">Ex Member</th:block>-->
+        <!--</th:block>-->
 
         <dl>
             <th:block th:if="${member.username}">
@@ -71,14 +72,19 @@
                 </dd>
             </th:block>
 
-            <th:block th:unless="${#lists.isEmpty(member.pins)}">
+            <!--<th:block th:unless="${#lists.isEmpty(member.pins)}">-->
+                <!--<dt>Pin</dt>-->
+                <!--<dd>-->
+                    <!--<th:block th:each="pin : ${member.pins}">-->
+                        <!--<th:block th:text="${pin.pin}"/>-->
+                        <!--<br/>-->
+                    <!--</th:block>-->
+                <!--</dd>-->
+            <!--</th:block>-->
+
+            <th:block th:if="${member.pin}">
                 <dt>Pin</dt>
-                <dd>
-                    <th:block th:each="pin : ${member.pins}">
-                        <th:block th:text="${pin.pin}"/>
-                        <br/>
-                    </th:block>
-                </dd>
+                <dd th:text="${member.pin.pin}"/>
             </th:block>
 
             <th:block th:unless="${#lists.isEmpty(member.cards)}">
@@ -95,6 +101,7 @@
                 </dd>
             </th:block>
 
+            <!-- TODO: see if a zero balance causes this to be hidden (it shouldn't be hidden) -->
             <th:block th:if="${member.balance}">
                 <dt>Current Balance</dt>
                 <dd>
@@ -108,9 +115,9 @@
                 <dd th:include="fragments/currency::format(${member.creditLimitInPounds})">0</dd>
             </th:block>
 
-            <th:block th:if="${member.account?.paymentReference}">
+            <th:block th:if="${member.paymentReference}">
                 <dt>Account Ref</dt>
-                <dd th:text="${member.account.paymentReference}"/>
+                <dd th:text="${member.paymentReference}"/>
             </th:block>
 
             <th:block th:if="${member.addressLines}">

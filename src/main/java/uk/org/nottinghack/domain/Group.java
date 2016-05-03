@@ -5,7 +5,7 @@ import java.io.Serializable;
 import java.util.Set;
 
 /**
- * Created by Rob on 13/06/2015.
+ * @author <a href="rob.hunt@nottinghack.org.uk">Robert Hunt</a>
  */
 @Entity
 @Table(name = "grp")

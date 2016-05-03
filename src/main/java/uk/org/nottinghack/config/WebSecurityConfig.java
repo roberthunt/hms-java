@@ -52,7 +52,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter
     protected void configure(HttpSecurity http) throws Exception {
         http
             .authorizeRequests()
-                .antMatchers("/", "/hms/**").permitAll()
+                .antMatchers("/", "/hms/**", "/sniffy/**").permitAll()
                 .antMatchers("/members/register").hasIpAddress(registerSubnet)
                 .anyRequest().authenticated()
             .and()
@@ -64,7 +64,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter
                 .logout()
                  // allows logout via GET method but disables CSRF protection for the logout url
                 .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-                .permitAll();
+                .permitAll()
+            .and()
+                // redirect to homepage when user is not authorized to access a uri
+                .exceptionHandling().accessDeniedPage("/");
     }
 
     @Bean

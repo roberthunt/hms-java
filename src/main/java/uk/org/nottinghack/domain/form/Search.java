@@ -1,7 +1,7 @@
 package uk.org.nottinghack.domain.form;
 
 /**
- * Created by Rob on 02/03/2015.
+ * @author <a href="rob.hunt@nottinghack.org.uk">Robert Hunt</a>
  */
 public class Search
 {

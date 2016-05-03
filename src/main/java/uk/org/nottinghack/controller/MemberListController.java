@@ -10,19 +10,16 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.thymeleaf.TemplateEngine;
 import uk.org.nottinghack.domain.*;
 import uk.org.nottinghack.domain.converter.MemberStatusAttributeConverter;
 import uk.org.nottinghack.domain.form.RegistrationForm;
 import uk.org.nottinghack.domain.form.Search;
 import uk.org.nottinghack.exception.ExistingMemberException;
-import uk.org.nottinghack.service.EmailService;
 import uk.org.nottinghack.service.MailinglistService;
 import uk.org.nottinghack.service.MemberService;
 import uk.org.nottinghack.service.MembershipService;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
 import java.util.Map;
 
 /**
@@ -48,13 +45,6 @@ public class MemberListController
 
     @Autowired
     private MailinglistService mailinglistService;
-
-    // TODO: remove, testing only
-    @Autowired
-    private EmailService emailService;
-
-    @Autowired
-    private TemplateEngine templateEngine;
 
     @RequestMapping
     public String index(Model model)
@@ -108,23 +98,6 @@ public class MemberListController
             return "redirect:/login";
         }
         return TEMPLATE_DIR + REGISTER;
-    }
-
-    @RequestMapping("/test")
-    @ResponseBody
-    public String test()
-    {
-//        Member member = memberService.getMember(177);
-//
-//        final Context ctx = new Context();
-//        ctx.setVariable("name", "tester");
-//        ctx.setVariable("member", member);
-//
-//        final String htmlContent = this.templateEngine.process("email/membership_complete", ctx);
-//
-//        return htmlContent;
-        emailService.send("robert.hunt@mpec.co.uk", "testing", "HELLO<br /> WORLD!");
-        return "SENT!";
     }
 
     @RequestMapping(value="/email/status/{statusId}")

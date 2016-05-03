@@ -1,39 +1,18 @@
-package uk.org.nottinghack.domain;
+package uk.org.nottinghack.domain.dto;
 
-import javax.persistence.*;
-import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
  * @author <a href="rob.hunt@nottinghack.org.uk">Robert Hunt</a>
  */
-@Entity
-@Table(name = "pins")
-public class Pin implements Serializable
+public class PinDto
 {
-    @Id
-    @GeneratedValue
-    @Column(name = "pin_id")
     private int id;
-
-    @Column(name = "pin", length = 12)
     private String pin;
-
-    @Column(name = "date_added")
     private LocalDateTime added;
-
-    @Column(name = "expiry")
     private LocalDateTime expiry;
 
-    // TODO: embedded type or enum
-    @Column(name = "state")
-    private Integer state;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id")
-    private Member member;
-
-    public Pin()
+    public PinDto()
     {
         // default no-arg constructor
     }
@@ -76,25 +55,5 @@ public class Pin implements Serializable
     public void setExpiry(LocalDateTime expiry)
     {
         this.expiry = expiry;
-    }
-
-    public Integer getState()
-    {
-        return state;
-    }
-
-    public void setState(Integer state)
-    {
-        this.state = state;
-    }
-
-//    public Member getMember()
-//    {
-//        return member;
-//    }
-
-    public void setMember(Member member)
-    {
-        this.member = member;
     }
 }
