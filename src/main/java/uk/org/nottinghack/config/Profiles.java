@@ -5,6 +5,7 @@ package uk.org.nottinghack.config;
  */
 public final class Profiles
 {
+    public static final String CONTINUOUS_INTEGRATION = "ci";
     public static final String TEST = "test";
 
     private Profiles()

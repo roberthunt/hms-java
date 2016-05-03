@@ -2,7 +2,6 @@ package uk.org.nottinghack.controller;
 
 import javax.servlet.Filter;
 
-import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -40,7 +39,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 /**
  * @author <a href="rob.hunt@nottinghack.org.uk">Robert Hunt</a>
  */
-@ActiveProfiles(Profiles.TEST)
+@ActiveProfiles(Profiles.CONTINUOUS_INTEGRATION)
 @RunWith(SpringJUnit4ClassRunner.class)
 //@SpringApplicationConfiguration(classes = {TestContext.class, Application.class})
 @ContextConfiguration(classes = {TestContext.class, WebSecurityConfig.class, MvcConfig.class})

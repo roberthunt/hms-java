@@ -1,0 +1,5 @@
+# Database Configuration
+spring.datasource.url: 'sniffer:jdbc:mysql://localhost/hms_java?zeroDateTimeBehavior=convertToNull'
+spring.datasource.driver-class-name: io.sniffy.MockDriver
+spring.datasource.username: root
+spring.datasource.password:

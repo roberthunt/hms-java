@@ -8,5 +8,5 @@ cache:
   - $HOME/.m2
 install: true
 before_script:
-  - mysql -e 'create database hms_java;'
+  - mysql -e 'create database hms_java_test;'
 script: ./mvnw install

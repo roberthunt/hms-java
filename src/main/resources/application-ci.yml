@@ -1,0 +1,4 @@
+# Database Configuration
+spring.datasource.url: 'jdbc:mysql://localhost/hms_java_test?zeroDateTimeBehavior=convertToNull'
+spring.datasource.username: root
+spring.datasource.password:
