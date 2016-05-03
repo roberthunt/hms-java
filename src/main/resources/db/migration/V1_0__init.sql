@@ -224,7 +224,7 @@ CREATE TABLE IF NOT EXISTS `tl_google_notifications` (
   `channel_token` varchar(256) DEFAULT NULL,
   `resource_id` varchar(256) DEFAULT NULL,
   `channel_created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `channel_expiration` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `channel_expiration` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`channel_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
@@ -270,6 +270,7 @@ CREATE TABLE IF NOT EXISTS `mv_votes` (
 
 CREATE TABLE IF NOT EXISTS `mv_statuses` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
+  `status` varchar(255) NOT NULL,
   `status` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
@@ -321,7 +322,7 @@ CREATE TABLE IF NOT EXISTS `gg_summary` (
   `ggaddresses_id` int(11) NOT NULL,
   `ggsum_auto_wc` int(11) DEFAULT NULL,
   `ggsum_manual_wc` int(11) DEFAULT NULL,
-  `ggemail_date` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `ggemail_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`ggemail_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
 
