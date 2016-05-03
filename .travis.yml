@@ -1,12 +1,20 @@
 language: java
 jdk:
-  - oraclejdk8
+- oraclejdk8
 services:
- - mysql
+- mysql
 cache:
   directories:
-  - $HOME/.m2
+  - "$HOME/.m2"
 install: true
 before_script:
-  - mysql -e 'create database hms_java_test;'
-script: ./mvnw install
+- mysql -e 'create database hms_java_test;'
+script: "./mvnw install"
+before_install:
+- openssl aes-256-cbc -K $encrypted_25bf942686cb_key -iv $encrypted_25bf942686cb_iv
+  -in deploy-key.enc -out deploy-key -d
+- rm deploy-key.enc
+- chmod 600 deploy-key
+- mv deploy-key ~/.ssh/id_rsa
+after_succes:
+- scp target/target/hms-1.0-SNAPSHOT.jar deploy@139.59.171.13:/home/deploy/hms-java.jar
