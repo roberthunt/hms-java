@@ -20,4 +20,4 @@ before_install:
 - mv deploy-key ~/.ssh/id_rsa
 after_success:
 - scp target/hms-1.0-SNAPSHOT.jar deploy@139.59.171.13:/var/hms-java/hms-java.jar
-- ssh deploy@139.59.171.13 service hms-java start
+- ssh deploy@139.59.171.13 /etc/init.d/hms-java restart
