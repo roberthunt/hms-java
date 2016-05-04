@@ -50,9 +50,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+        // TODO: /undefined is a quick fix for a OS X Firefox bug can can be removed when sniffy is updated beyond 3.0.7
         http
             .authorizeRequests()
-                .antMatchers("/", "/hms/**", "/sniffy/**").permitAll()
+                .antMatchers("/", "/hms/**", "/sniffy/**", "/undefined", "/undefined/**").permitAll()
                 .antMatchers("/members/register").hasIpAddress(registerSubnet)
                 .anyRequest().authenticated()
             .and()

@@ -14,7 +14,8 @@
             <a th:replace="fragments/breadcrumbs :: memberEmails(${member}, 'Emails')">Emails</a>
         </div>
         <div layout:fragment="content">
-            <h3>All E-mail Records for <th:block th:text="${member.bestName}"></th:block></h3>
+            <!--TODO: replace member.firstname with member.bestName when converted to use DTO-->
+            <h3>All E-mail Records for <th:block th:text="${member.firstname}"></th:block></h3>
 
             <th:block th:each="emails : ${memberEmails}">
                 <div class="emailRecordDay">
@@ -25,7 +26,8 @@
                             -
                             <th:block th:text="${email.subject}"></th:block>
                             to
-                            <a th:href="${#mvc.url('MC#view').arg(0, member.id).build()}" th:text="${email.member.bestName}">Member</a>
+                            <!--TODO: replace member.firstname with member.bestName when converted to use DTO-->
+                            <a th:href="${#mvc.url('MC#view').arg(0, member.id).build()}" th:text="${email.member.firstname}">Member</a>
                         </li>
                     </ul>
                 </div>

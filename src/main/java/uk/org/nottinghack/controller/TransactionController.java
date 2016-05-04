@@ -39,8 +39,8 @@ public class TransactionController
     {
         model.addAttribute("memberId", memberId);
         model.addAttribute("transactions", transactionService.getTransactionsByMemberId(memberId, pageable));
-        // TODO: use dto instead
-        //model.addAttribute("balance", memberService.getMember(memberId).getBalanceInPounds());
+        // TODO: use dto instead (get balance in pounds)
+        model.addAttribute("balance", memberService.getMember(memberId).getBalance() / 100);
         return TRANSACTION_LIST_VIEW;
     }
 }

@@ -27,7 +27,8 @@
         <!--<a th:each="group : ${member.groups}" th:text="${group.description}" th:href="${#mvc.url('GC#view').arg(0, group.id).build()}">Group</a>-->
         <tr th:each="member : ${members}">
             <td>
-                <a th:text="${member.fullName}" th:href="${#mvc.url('MC#view').arg(0, member.id).build()}">Member Name</a>
+                <!-- TODO: replace ${member.firstname} + ' ' + ${member.surname} with member.fullName when switched to DTO -->
+                <a th:text="${member.firstname} + ' ' + ${member.surname}" th:href="${#mvc.url('MC#view').arg(0, member.id).build()}">Member Name</a>
             </td>
             <td th:text="${member.email}"></td>
             <td>
